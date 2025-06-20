@@ -10,7 +10,8 @@ Discord APIとの統合機能を提供するMCP (Model Context Protocol) サー�
 - **フレームワーク**: MCP SDK (@modelcontextprotocol/sdk)
 - **バリデーション**: Zod
 - **コンテナ**: Docker
-- **実行環境**: Node.js 18+
+- **実行環境**: Node.js 22+
+- **テストフレームワーク**: Vitest
 - **主要ライブラリ**: MCP SDK, axios (HTTP クライアント)
 
 ## アーキテクチャ
@@ -64,6 +65,8 @@ npm run dev
 
 # テスト実行
 npm test
+npm run test:watch      # 監視モード
+npm run test:coverage   # カバレッジ付き
 
 # ビルド
 npm run build
@@ -150,65 +153,23 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 - **曖昧な表現**: 「修正」「更新」など具体性に欠ける表現の単独使用
 - **冗長な説明**: 不必要に長いコミットメッセージ
 
-## セットアップ手順
-
-### 1. 環境構築
+## クイックスタート
 
 ```bash
-# リポジトリをクローン
-git clone https://github.com/yourusername/discord-mcp.git
-cd discord-mcp
-```
-
-### 2. Dockerイメージのビルド
-
-```bash
-# Dockerイメージをビルド
+# 1. ビルド
 docker build -t discord-mcp .
-```
 
-### 3. 設定ファイル
-
-Discord Bot トークンを環境変数として設定：
-
-```bash
-# 環境変数として設定
-export DISCORD_TOKEN="your_discord_bot_token"
-
-# またはDockerで直接指定
-docker run --rm -e DISCORD_TOKEN=your_token discord-mcp
-```
-
-### 4. Claude Desktop設定
-
-Claude Desktopの設定ファイルに以下を追加：
-
-```json
+# 2. Claude Desktop設定
+# ~/Library/Application Support/Claude/claude_desktop_config.json
 {
   "mcpServers": {
     "discord-mcp": {
       "command": "docker",
-      "args": ["run", "--rm", "-e", "DISCORD_TOKEN=your_discord_bot_token", "discord-mcp"]
+      "args": ["run", "--rm", "-i", "-e", "DISCORD_TOKEN=your_token", "discord-mcp"]
     }
   }
 }
 ```
-
-## トラブルシューティング
-
-### よくある問題
-
-**Docker起動エラー**: 
-- Dockerデーモンが起動していることを確認
-- イメージが正しくビルドされているか確認: `docker images | grep discord-mcp`
-
-**Discord API認証エラー**:
-- DISCORD_TOKENが正しく設定されているか確認
-- Bot トークンの権限スコープを確認
-
-**MCP接続エラー**:
-- Claude Desktopの設定ファイル形式を確認
-- stdioプロトコルでの接続が正常に動作するか確認
 
 ## ドキュメント管理方針
 
@@ -239,3 +200,12 @@ Claude Desktopの設定ファイルに以下を追加：
 - **詳細な例**: `docs/examples/`に分離
 - **パターンとベストプラクティス**: `docs/patterns/`に分離
 - **定期的な見直し**: 古い情報の削除と重複の排除
+
+## 関連ドキュメント
+
+### 開発者向けガイド
+
+- **[機能開発フロー](docs/development-flow.md)**: TDD による新機能追加手順とベストプラクティス
+- **[アーキテクチャ設計書](docs/architecture/README.md)**: 詳細な設計原則と構造説明
+- **[API仕様書](docs/api/README.md)**: Discord API との統合仕様
+- **[デプロイ手順](docs/deployment/README.md)**: 本番環境へのデプロイガイド
