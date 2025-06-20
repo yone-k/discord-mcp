@@ -14,6 +14,11 @@ import {
   GetServerListInputSchema,
   GetServerListInput 
 } from './tools/get-server-list.js';
+import {
+  getServerDetails,
+  GetServerDetailsInputSchema,
+  GetServerDetailsInput
+} from './tools/get-server-details.js';
 
 /**
  * Discord MCP Server
@@ -54,6 +59,21 @@ class DiscordMCPServer {
               },
               additionalProperties: false
             }
+          },
+          {
+            name: 'get_server_details',
+            description: '特定のDiscordサーバーの詳細情報を取得します',
+            inputSchema: {
+              type: 'object',
+              properties: {
+                serverId: {
+                  type: 'string',
+                  description: '詳細情報を取得するサーバーのID'
+                }
+              },
+              required: ['serverId'],
+              additionalProperties: false
+            }
           }
         ],
       };
@@ -67,6 +87,8 @@ class DiscordMCPServer {
         switch (name) {
           case 'get_server_list':
             return await this.handleGetServerList(args);
+          case 'get_server_details':
+            return await this.handleGetServerDetails(args);
           default:
             throw new McpError(
               ErrorCode.MethodNotFound,
@@ -115,6 +137,46 @@ class DiscordMCPServer {
 
     // サーバー一覧を取得
     const result = await getServerList(this.discordClient, input);
+
+    return {
+      content: [
+        {
+          type: 'text' as const,
+          text: JSON.stringify(result, null, 2)
+        }
+      ]
+    };
+  }
+
+  /**
+   * サーバー詳細情報取得ツールのハンドラー
+   */
+  private async handleGetServerDetails(args: unknown) {
+    // Discord クライアントの初期化（遅延初期化）
+    if (!this.discordClient) {
+      const token = process.env.DISCORD_TOKEN;
+      if (!token) {
+        throw new McpError(
+          ErrorCode.InvalidRequest,
+          'DISCORD_TOKEN環境変数が設定されていません'
+        );
+      }
+      this.discordClient = new DiscordClient(token);
+    }
+
+    // 入力バリデーション
+    let input: GetServerDetailsInput;
+    try {
+      input = GetServerDetailsInputSchema.parse(args || {});
+    } catch (error) {
+      throw new McpError(
+        ErrorCode.InvalidParams,
+        `無効なパラメータ: ${error instanceof Error ? error.message : String(error)}`
+      );
+    }
+
+    // サーバー詳細情報を取得
+    const result = await getServerDetails(this.discordClient, input);
 
     return {
       content: [

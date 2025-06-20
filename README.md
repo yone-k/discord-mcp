@@ -9,7 +9,11 @@ Discord API MCP (Model Context Protocol) Server - Discord機能をMCP対応ク�
 - Zodバリデーションを使用したTypeScript実装
 - 簡単なデプロイのためのDockerサポート
 - MCPプロトコル準拠
-- Discord API統合（近日公開予定）
+- Discord API統合
+
+## 利用可能なツール
+
+利用可能なツールの詳細については、[ツール一覧](TOOLLIST.md)を参照してください。
 
 ## 要件
 
@@ -178,29 +182,6 @@ python -m json.tool ~/Library/Application\ Support/Claude/claude_desktop_config.
 # Dockerイメージの確認
 docker images | grep discord-mcp
 ```
-
-## トラブルシューティング
-
-### よくある問題
-
-**Docker起動エラー**: 
-- Dockerデーモンが起動していることを確認
-- イメージが正しくビルドされているか確認: `docker images | grep discord-mcp`
-
-**Discord API認証エラー**:
-- DISCORD_TOKENが正しく設定されているか確認
-- Bot トークンの権限スコープを確認
-- Discord Developer Portalでトークンが有効か確認
-
-**MCP接続エラー**:
-- Claude Desktopの設定ファイル形式を確認（JSONの構文エラーなど）
-- ファイルパスが正しく設定されているか確認
-- stdioプロトコルでの接続が正常に動作するか確認
-
-**Claude Desktopで認識されない**:
-- Claude Desktopを再起動
-- 設定ファイルのパスが正しいか確認
-- コマンドが実行可能か確認: `which docker` または `which node`
 
 ## ライセンス
 

@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
-import { DiscordGuild, DiscordApiError, DiscordBotUser } from '../types/discord.js';
+import { DiscordGuild, DiscordApiError, DiscordBotUser, DiscordGuildDetailed } from '../types/discord.js';
 
 /**
  * Discord REST API クライアント
@@ -40,6 +40,35 @@ export class DiscordClient {
     try {
       const response = await this.http.get('/users/@me');
       return response.data;
+    } catch (error) {
+      this.handleApiError(error as AxiosError);
+      throw error;
+    }
+  }
+
+  /**
+   * 特定のサーバーの詳細情報を取得
+   */
+  async getGuildDetails(guildId: string): Promise<DiscordGuildDetailed> {
+    try {
+      const [guildResponse, channelsResponse, rolesResponse] = await Promise.all([
+        this.http.get(`/guilds/${guildId}?with_counts=true`),
+        this.http.get(`/guilds/${guildId}/channels`),
+        this.http.get(`/guilds/${guildId}/roles`)
+      ]);
+
+      const guild = guildResponse.data;
+      const channels = channelsResponse.data;
+      const roles = rolesResponse.data;
+
+      return {
+        ...guild,
+        created_at: new Date(parseInt(guildId) / 4194304 + 1420070400000).toISOString(),
+        channels_count: channels.length,
+        roles_count: roles.length,
+        emojis_count: guild.emojis ? guild.emojis.length : 0,
+        stickers_count: guild.stickers ? guild.stickers.length : 0
+      };
     } catch (error) {
       this.handleApiError(error as AxiosError);
       throw error;

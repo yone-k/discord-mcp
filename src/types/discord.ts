@@ -40,3 +40,28 @@ export interface DiscordBotUser {
   /** ボットかどうか */
   bot: boolean;
 }
+
+export interface DiscordGuildDetailed extends DiscordGuild {
+  /** サーバーの作成日時 */
+  created_at: string;
+  /** サーバーのオーナーID */
+  owner_id: string;
+  /** サーバーの地域 */
+  region?: string;
+  /** AFKチャンネルID */
+  afk_channel_id: string | null;
+  /** AFKタイムアウト（秒） */
+  afk_timeout: number;
+  /** サーバーのブースト数 */
+  premium_subscription_count?: number;
+  /** サーバーのブーストレベル */
+  premium_tier: number;
+  /** チャンネル数 */
+  channels_count?: number;
+  /** 役職数 */
+  roles_count?: number;
+  /** 絵文字数 */
+  emojis_count?: number;
+  /** スタンプ数 */
+  stickers_count?: number;
+}

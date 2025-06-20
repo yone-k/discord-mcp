@@ -9,7 +9,11 @@ Discord API MCP (Model Context Protocol) Server - TypeScript implementation for 
 - TypeScript implementation with Zod validation
 - Docker support for easy deployment
 - MCP protocol compliance
-- Discord API integration (coming soon)
+- Discord API integration
+
+## Available Tools
+
+For detailed information about available tools, see [Tool List](TOOLLIST.en.md).
 
 ## Requirements
 
