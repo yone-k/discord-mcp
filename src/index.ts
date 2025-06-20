@@ -221,7 +221,7 @@ async function main(): Promise<void> {
 }
 
 // スクリプトが直接実行された場合のみ起動
-if (process.argv[1] && process.argv[1].endsWith('index.js')) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   main().catch((error) => {
     console.error('Fatal error:', error);
     process.exit(1);
