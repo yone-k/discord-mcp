@@ -65,3 +65,35 @@ export interface DiscordGuildDetailed extends DiscordGuild {
   /** スタンプ数 */
   stickers_count?: number;
 }
+
+export interface DiscordChannel {
+  /** チャンネルID */
+  id: string;
+  /** チャンネル名 */
+  name: string;
+  /** チャンネルタイプ（0: テキスト, 2: ボイス, 4: カテゴリ など） */
+  type: number;
+  /** チャンネルの位置 */
+  position: number;
+  /** サーバーID */
+  guild_id: string;
+  /** チャンネルの説明（トピック） */
+  topic?: string | null;
+  /** NSFWかどうか */
+  nsfw?: boolean;
+  /** 親カテゴリのID */
+  parent_id?: string | null;
+  /** 権限上書き設定 */
+  permission_overwrites?: DiscordPermissionOverwrite[];
+}
+
+export interface DiscordPermissionOverwrite {
+  /** 対象のID（ユーザーまたはロール） */
+  id: string;
+  /** 対象のタイプ（0: ロール, 1: ユーザー） */
+  type: number;
+  /** 許可する権限 */
+  allow: string;
+  /** 拒否する権限 */
+  deny: string;
+}
