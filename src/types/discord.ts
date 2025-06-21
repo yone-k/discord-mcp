@@ -97,3 +97,61 @@ export interface DiscordPermissionOverwrite {
   /** 拒否する権限 */
   deny: string;
 }
+
+export interface DiscordGuildMember {
+  /** ユーザー情報 */
+  user?: DiscordUser;
+  /** ニックネーム */
+  nick?: string | null;
+  /** アバターハッシュ */
+  avatar?: string | null;
+  /** ロールID一覧 */
+  roles: string[];
+  /** サーバー参加日時 */
+  joined_at: string;
+  /** ブースト開始日時 */
+  premium_since?: string | null;
+  /** 聴覚障害があるかどうか */
+  deaf: boolean;
+  /** ミュートされているかどうか */
+  mute: boolean;
+  /** フラグ */
+  flags: number;
+  /** タイムアウトされるまでの時間 */
+  communication_disabled_until?: string | null;
+}
+
+export interface DiscordUser {
+  /** ユーザーID */
+  id: string;
+  /** ユーザー名 */
+  username: string;
+  /** ディスクリミネーター */
+  discriminator: string;
+  /** グローバル名 */
+  global_name?: string | null;
+  /** アバターハッシュ */
+  avatar: string | null;
+  /** ボットかどうか */
+  bot?: boolean;
+  /** システムユーザーかどうか */
+  system?: boolean;
+  /** 二要素認証が有効かどうか */
+  mfa_enabled?: boolean;
+  /** バナーハッシュ */
+  banner?: string | null;
+  /** アクセントカラー */
+  accent_color?: number | null;
+  /** ローカル */
+  locale?: string;
+  /** 確認済みかどうか */
+  verified?: boolean;
+  /** メールアドレス */
+  email?: string | null;
+  /** フラグ */
+  flags?: number;
+  /** プレミアムタイプ */
+  premium_type?: number;
+  /** 公開フラグ */
+  public_flags?: number;
+}
