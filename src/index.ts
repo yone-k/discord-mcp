@@ -24,6 +24,11 @@ import {
   GetChannelListInputSchema,
   GetChannelListInput
 } from './tools/get-channel-list.js';
+import {
+  getUserList,
+  GetUserListInputSchema,
+  GetUserListInput
+} from './tools/get-user-list.js';
 
 /**
  * Discord MCP Server
@@ -104,6 +109,41 @@ class DiscordMCPServer {
               required: ['serverId'],
               additionalProperties: false
             }
+          },
+          {
+            name: 'get_user_list',
+            description: '特定のDiscordサーバーのユーザー一覧を取得します',
+            inputSchema: {
+              type: 'object',
+              properties: {
+                serverId: {
+                  type: 'string',
+                  description: 'ユーザー一覧を取得するサーバーのID'
+                },
+                limit: {
+                  type: 'number',
+                  description: '取得する最大数（デフォルト: 100、最大: 1000）',
+                  minimum: 1,
+                  maximum: 1000,
+                  default: 100
+                },
+                after: {
+                  type: 'string',
+                  description: 'ページネーション用のユーザーID'
+                },
+                includeDetails: {
+                  type: 'boolean',
+                  description: '詳細情報（ロール、参加日時など）を含めるかどうか',
+                  default: false
+                },
+                roleId: {
+                  type: 'string',
+                  description: 'フィルタリングするロールID'
+                }
+              },
+              required: ['serverId'],
+              additionalProperties: false
+            }
           }
         ],
       };
@@ -121,6 +161,8 @@ class DiscordMCPServer {
             return await this.handleGetServerDetails(args);
           case 'get_channel_list':
             return await this.handleGetChannelList(args);
+          case 'get_user_list':
+            return await this.handleGetUserList(args);
           default:
             throw new McpError(
               ErrorCode.MethodNotFound,
@@ -249,6 +291,46 @@ class DiscordMCPServer {
 
     // チャンネル一覧を取得
     const result = await getChannelList(this.discordClient, input);
+
+    return {
+      content: [
+        {
+          type: 'text' as const,
+          text: JSON.stringify(result, null, 2)
+        }
+      ]
+    };
+  }
+
+  /**
+   * ユーザー一覧取得ツールのハンドラー
+   */
+  private async handleGetUserList(args: unknown) {
+    // Discord クライアントの初期化（遅延初期化）
+    if (!this.discordClient) {
+      const token = process.env.DISCORD_TOKEN;
+      if (!token) {
+        throw new McpError(
+          ErrorCode.InvalidRequest,
+          'DISCORD_TOKEN環境変数が設定されていません'
+        );
+      }
+      this.discordClient = new DiscordClient(token);
+    }
+
+    // 入力バリデーション
+    let input: GetUserListInput;
+    try {
+      input = GetUserListInputSchema.parse(args || {});
+    } catch (error) {
+      throw new McpError(
+        ErrorCode.InvalidParams,
+        `無効なパラメータ: ${error instanceof Error ? error.message : String(error)}`
+      );
+    }
+
+    // ユーザー一覧を取得
+    const result = await getUserList(this.discordClient, input);
 
     return {
       content: [

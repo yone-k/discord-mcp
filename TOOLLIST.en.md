@@ -29,6 +29,14 @@ Get a list of channels from a specific Discord server.
 - Can filter by channel type
 - Optionally includes topic, NSFW, and permission information
 
+### get_user_list
+
+Get a list of users from a specific Discord server.
+
+- Retrieves server members with pagination support
+- Can filter by role ID
+- Optionally includes roles, join date, and boost information
+
 ## Configuration
 
 To use these tools, you need:

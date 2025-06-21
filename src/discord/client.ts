@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
-import { DiscordGuild, DiscordApiError, DiscordBotUser, DiscordGuildDetailed, DiscordChannel } from '../types/discord.js';
+import { DiscordGuild, DiscordApiError, DiscordBotUser, DiscordGuildDetailed, DiscordChannel, DiscordGuildMember } from '../types/discord.js';
 
 /**
  * Discord REST API クライアント
@@ -81,6 +81,30 @@ export class DiscordClient {
   async getGuildChannels(guildId: string): Promise<DiscordChannel[]> {
     try {
       const response = await this.http.get(`/guilds/${guildId}/channels`);
+      return response.data;
+    } catch (error) {
+      this.handleApiError(error as AxiosError);
+      throw error;
+    }
+  }
+
+  /**
+   * 特定のサーバーのメンバー一覧を取得
+   */
+  async getGuildMembers(guildId: string, options?: {
+    limit?: number;
+    after?: string;
+  }): Promise<DiscordGuildMember[]> {
+    try {
+      const params = new URLSearchParams();
+      if (options?.limit) {
+        params.append('limit', Math.min(options.limit, 1000).toString());
+      }
+      if (options?.after) {
+        params.append('after', options.after);
+      }
+
+      const response = await this.http.get(`/guilds/${guildId}/members?${params.toString()}`);
       return response.data;
     } catch (error) {
       this.handleApiError(error as AxiosError);
