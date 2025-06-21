@@ -21,6 +21,14 @@ Get detailed information about a specific Discord server.
 - Statistics including member count, channel count, role count
 - Boost level and feature list
 
+### get_channel_list
+
+Get a list of channels from a specific Discord server.
+
+- Retrieves all channels including text, voice, and categories
+- Can filter by channel type
+- Optionally includes topic, NSFW, and permission information
+
 ## Configuration
 
 To use these tools, you need:

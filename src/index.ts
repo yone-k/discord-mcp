@@ -19,6 +19,11 @@ import {
   GetServerDetailsInputSchema,
   GetServerDetailsInput
 } from './tools/get-server-details.js';
+import {
+  getChannelList,
+  GetChannelListInputSchema,
+  GetChannelListInput
+} from './tools/get-channel-list.js';
 
 /**
  * Discord MCP Server
@@ -74,6 +79,31 @@ class DiscordMCPServer {
               required: ['serverId'],
               additionalProperties: false
             }
+          },
+          {
+            name: 'get_channel_list',
+            description: '特定のDiscordサーバーのチャンネル一覧を取得します',
+            inputSchema: {
+              type: 'object',
+              properties: {
+                serverId: {
+                  type: 'string',
+                  description: 'チャンネル一覧を取得するサーバーのID'
+                },
+                includeDetails: {
+                  type: 'boolean',
+                  description: '詳細情報（トピック、NSFW、権限など）を含めるかどうか',
+                  default: false
+                },
+                channelType: {
+                  type: 'number',
+                  description: 'フィルタリングするチャンネルタイプ（0: テキスト, 2: ボイス, 4: カテゴリ）',
+                  minimum: 0
+                }
+              },
+              required: ['serverId'],
+              additionalProperties: false
+            }
           }
         ],
       };
@@ -89,6 +119,8 @@ class DiscordMCPServer {
             return await this.handleGetServerList(args);
           case 'get_server_details':
             return await this.handleGetServerDetails(args);
+          case 'get_channel_list':
+            return await this.handleGetChannelList(args);
           default:
             throw new McpError(
               ErrorCode.MethodNotFound,
@@ -177,6 +209,46 @@ class DiscordMCPServer {
 
     // サーバー詳細情報を取得
     const result = await getServerDetails(this.discordClient, input);
+
+    return {
+      content: [
+        {
+          type: 'text' as const,
+          text: JSON.stringify(result, null, 2)
+        }
+      ]
+    };
+  }
+
+  /**
+   * チャンネル一覧取得ツールのハンドラー
+   */
+  private async handleGetChannelList(args: unknown) {
+    // Discord クライアントの初期化（遅延初期化）
+    if (!this.discordClient) {
+      const token = process.env.DISCORD_TOKEN;
+      if (!token) {
+        throw new McpError(
+          ErrorCode.InvalidRequest,
+          'DISCORD_TOKEN環境変数が設定されていません'
+        );
+      }
+      this.discordClient = new DiscordClient(token);
+    }
+
+    // 入力バリデーション
+    let input: GetChannelListInput;
+    try {
+      input = GetChannelListInputSchema.parse(args || {});
+    } catch (error) {
+      throw new McpError(
+        ErrorCode.InvalidParams,
+        `無効なパラメータ: ${error instanceof Error ? error.message : String(error)}`
+      );
+    }
+
+    // チャンネル一覧を取得
+    const result = await getChannelList(this.discordClient, input);
 
     return {
       content: [

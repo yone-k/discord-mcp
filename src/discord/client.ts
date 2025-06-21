@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
-import { DiscordGuild, DiscordApiError, DiscordBotUser, DiscordGuildDetailed } from '../types/discord.js';
+import { DiscordGuild, DiscordApiError, DiscordBotUser, DiscordGuildDetailed, DiscordChannel } from '../types/discord.js';
 
 /**
  * Discord REST API クライアント
@@ -69,6 +69,19 @@ export class DiscordClient {
         emojis_count: guild.emojis ? guild.emojis.length : 0,
         stickers_count: guild.stickers ? guild.stickers.length : 0
       };
+    } catch (error) {
+      this.handleApiError(error as AxiosError);
+      throw error;
+    }
+  }
+
+  /**
+   * 特定のサーバーのチャンネル一覧を取得
+   */
+  async getGuildChannels(guildId: string): Promise<DiscordChannel[]> {
+    try {
+      const response = await this.http.get(`/guilds/${guildId}/channels`);
+      return response.data;
     } catch (error) {
       this.handleApiError(error as AxiosError);
       throw error;
