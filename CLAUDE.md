@@ -76,7 +76,8 @@ npm run build
 npm run lint
 npm run typecheck
 
-# Docker実行
+# Docker操作
+npm run docker:build    # Dockerイメージをビルド
 docker run --rm -e DISCORD_TOKEN=your_token discord-mcp
 ```
 
