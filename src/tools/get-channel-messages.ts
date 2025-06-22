@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { DiscordClient } from '../discord/client.js';
+import { ToolInputSchema } from '@modelcontextprotocol/sdk/types.js';
 
 /**
  * チャンネルメッセージ取得ツールの入力スキーマ
@@ -27,6 +28,44 @@ export const GetChannelMessagesInputSchema = z.object({
 );
 
 export type GetChannelMessagesInput = z.infer<typeof GetChannelMessagesInputSchema>;
+
+/**
+ * MCP ツール定義
+ */
+export const toolDefinition = {
+  name: 'get_channel_messages',
+  description: '特定のDiscordチャンネルのメッセージ履歴を取得します',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      channelId: {
+        type: 'string',
+        description: 'メッセージを取得するチャンネルのID'
+      },
+      limit: {
+        type: 'number',
+        description: '取得するメッセージの最大数（デフォルト: 50、最大: 100）',
+        minimum: 1,
+        maximum: 100,
+        default: 50
+      },
+      before: {
+        type: 'string',
+        description: '指定したメッセージIDより前のメッセージを取得'
+      },
+      after: {
+        type: 'string',
+        description: '指定したメッセージIDより後のメッセージを取得'
+      },
+      around: {
+        type: 'string',
+        description: '指定したメッセージIDの周辺のメッセージを取得'
+      }
+    },
+    required: ['channelId'],
+    additionalProperties: false
+  } as ToolInputSchema
+};
 
 /**
  * チャンネルメッセージ取得ツールの出力スキーマ

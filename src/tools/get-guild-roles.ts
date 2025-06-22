@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { DiscordClient } from '../discord/client.js';
+import { ToolInputSchema } from '@modelcontextprotocol/sdk/types.js';
 
 /**
  * サーバーロール取得ツールの入力スキーマ
@@ -16,6 +17,40 @@ export const GetGuildRolesInputSchema = z.object({
 }).strict();
 
 export type GetGuildRolesInput = z.infer<typeof GetGuildRolesInputSchema>;
+
+/**
+ * MCP ツール定義
+ */
+export const toolDefinition = {
+  name: 'get_guild_roles',
+  description: '特定のDiscordサーバーのロール一覧を取得します',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      guildId: {
+        type: 'string',
+        description: 'ロール一覧を取得するサーバーのID'
+      },
+      adminOnly: {
+        type: 'boolean',
+        description: '管理者権限を持つロールのみ取得',
+        default: false
+      },
+      excludeManaged: {
+        type: 'boolean',
+        description: '管理ロール（Bot、統合など）を除外',
+        default: false
+      },
+      includeDetails: {
+        type: 'boolean',
+        description: '詳細情報（タグ、アイコンなど）を含めるかどうか',
+        default: false
+      }
+    },
+    required: ['guildId'],
+    additionalProperties: false
+  } as ToolInputSchema
+};
 
 /**
  * サーバーロール取得ツールの出力スキーマ

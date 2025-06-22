@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { DiscordClient } from '../discord/client.js';
+import { ToolInputSchema } from '@modelcontextprotocol/sdk/types.js';
 
 /**
  * ユーザー一覧取得ツールの入力スキーマ
@@ -18,6 +19,45 @@ export const GetUserListInputSchema = z.object({
 }).strict();
 
 export type GetUserListInput = z.infer<typeof GetUserListInputSchema>;
+
+/**
+ * MCP ツール定義
+ */
+export const toolDefinition = {
+  name: 'get_user_list',
+  description: '特定のDiscordサーバーのユーザー一覧を取得します',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      serverId: {
+        type: 'string',
+        description: 'ユーザー一覧を取得するサーバーのID'
+      },
+      limit: {
+        type: 'number',
+        description: '取得する最大数（デフォルト: 100、最大: 1000）',
+        minimum: 1,
+        maximum: 1000,
+        default: 100
+      },
+      after: {
+        type: 'string',
+        description: 'ページネーション用のユーザーID'
+      },
+      includeDetails: {
+        type: 'boolean',
+        description: '詳細情報（ロール、参加日時など）を含めるかどうか',
+        default: false
+      },
+      roleId: {
+        type: 'string',
+        description: 'フィルタリングするロールID'
+      }
+    },
+    required: ['serverId'],
+    additionalProperties: false
+  } as ToolInputSchema
+};
 
 /**
  * ユーザー一覧取得ツールの出力スキーマ

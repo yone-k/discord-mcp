@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { DiscordClient } from '../discord/client.js';
+import { ToolInputSchema } from '@modelcontextprotocol/sdk/types.js';
 
 /**
  * メンバーロール取得ツールの入力スキーマ
@@ -18,6 +19,44 @@ export const GetMemberRolesInputSchema = z.object({
 }).strict();
 
 export type GetMemberRolesInput = z.infer<typeof GetMemberRolesInputSchema>;
+
+/**
+ * MCP ツール定義
+ */
+export const toolDefinition = {
+  name: 'get_member_roles',
+  description: '特定のDiscordサーバーメンバーのロール一覧を取得します',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      guildId: {
+        type: 'string',
+        description: 'メンバーが所属するサーバーのID'
+      },
+      userId: {
+        type: 'string',
+        description: 'ロールを取得するユーザーのID'
+      },
+      adminOnly: {
+        type: 'boolean',
+        description: '管理者権限を持つロールのみ取得',
+        default: false
+      },
+      excludeManaged: {
+        type: 'boolean',
+        description: '管理ロール（Bot、統合など）を除外',
+        default: false
+      },
+      includeDetails: {
+        type: 'boolean',
+        description: '詳細情報（タグ、アイコンなど）を含めるかどうか',
+        default: false
+      }
+    },
+    required: ['guildId', 'userId'],
+    additionalProperties: false
+  } as ToolInputSchema
+};
 
 /**
  * メンバーロール取得ツールの出力スキーマ

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { DiscordClient } from '../discord/client.js';
+import { ToolInputSchema } from '@modelcontextprotocol/sdk/types.js';
 
 /**
  * チャンネル一覧取得ツールの入力スキーマ
@@ -14,6 +15,35 @@ export const GetChannelListInputSchema = z.object({
 }).strict();
 
 export type GetChannelListInput = z.infer<typeof GetChannelListInputSchema>;
+
+/**
+ * MCP ツール定義
+ */
+export const toolDefinition = {
+  name: 'get_channel_list',
+  description: '特定のDiscordサーバーのチャンネル一覧を取得します',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      serverId: {
+        type: 'string',
+        description: 'チャンネル一覧を取得するサーバーのID'
+      },
+      includeDetails: {
+        type: 'boolean',
+        description: '詳細情報（トピック、NSFW、権限など）を含めるかどうか',
+        default: false
+      },
+      channelType: {
+        type: 'number',
+        description: 'フィルタリングするチャンネルタイプ（0: テキスト, 2: ボイス, 4: カテゴリ）',
+        minimum: 0
+      }
+    },
+    required: ['serverId'],
+    additionalProperties: false
+  } as ToolInputSchema
+};
 
 /**
  * チャンネル一覧取得ツールの出力スキーマ
