@@ -121,9 +121,6 @@ feat: Discord メッセージ送信機能を追加
 - Zodによる入力バリデーション
 - エラーハンドリングとレスポンス処理を含む
 
-🤖 Generated with [Claude Code](https://claude.ai/code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 
 ```bash
@@ -132,9 +129,6 @@ fix: Discord API認証エラーのハンドリングを修正
 - 401エラー時の適切なエラーメッセージ表示
 - トークン無効時のリトライロジックを改善
 
-🤖 Generated with [Claude Code](https://claude.ai/code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 
 ```bash
@@ -144,9 +138,6 @@ docs: README.mdにトラブルシューティングセクションを追加
 - Docker関連の問題解決手順を詳細化
 - MCP接続エラーの対処法を追加
 
-🤖 Generated with [Claude Code](https://claude.ai/code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 
 ### 禁止事項
