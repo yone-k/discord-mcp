@@ -10,6 +10,11 @@ import { toolDefinition as getMessage } from './channels/get-message.js';
 import { toolDefinition as getPinnedMessages } from './channels/get-pinned-messages.js';
 import { toolDefinition as getGuildRoles } from './roles/get-guild-roles.js';
 import { toolDefinition as getMemberRoles } from './roles/get-member-roles.js';
+import { toolDefinition as getVoiceRegions } from './voice/get-voice-regions.js';
+import { toolDefinition as getGuildInvites } from './invites/get-guild-invites.js';
+import { toolDefinition as getChannelInvites } from './invites/get-channel-invites.js';
+import { toolDefinition as getGuildWebhooks } from './webhooks/get-guild-webhooks.js';
+import { toolDefinition as getChannelWebhooks } from './webhooks/get-channel-webhooks.js';
 
 /**
  * 登録されたツール定義の一覧
@@ -23,7 +28,12 @@ export const registeredTools: ToolDefinition[] = [
   getMessage,
   getPinnedMessages,
   getGuildRoles,
-  getMemberRoles
+  getMemberRoles,
+  getVoiceRegions,
+  getGuildInvites,
+  getChannelInvites,
+  getGuildWebhooks,
+  getChannelWebhooks
 ];
 
 /**
