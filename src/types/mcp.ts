@@ -11,6 +11,10 @@ export interface JSONSchemaProperty {
   default?: string | number | boolean;
   minimum?: number;
   maximum?: number;
+  properties?: Record<string, JSONSchemaProperty>;
+  items?: JSONSchemaProperty;
+  required?: string[];
+  additionalProperties?: boolean;
 }
 
 /**
