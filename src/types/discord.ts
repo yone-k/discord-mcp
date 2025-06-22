@@ -274,3 +274,39 @@ export interface DiscordReaction {
     animated?: boolean;
   };
 }
+
+export interface DiscordRole {
+  /** ロールID */
+  id: string;
+  /** ロール名 */
+  name: string;
+  /** ロールの色 */
+  color: number;
+  /** ホイスト（別表示）されるか */
+  hoist: boolean;
+  /** アイコンハッシュ */
+  icon?: string | null;
+  /** Unicode絵文字 */
+  unicode_emoji?: string | null;
+  /** 表示順序の位置 */
+  position: number;
+  /** ロールの権限 */
+  permissions: string;
+  /** 管理者権限を持つか */
+  managed: boolean;
+  /** メンション可能か */
+  mentionable: boolean;
+  /** ロールタグ */
+  tags?: {
+    /** ボットID（ボット専用ロールの場合） */
+    bot_id?: string;
+    /** 統合ID（統合ロールの場合） */
+    integration_id?: string;
+    /** プレミアムサブスクライバー専用か */
+    premium_subscriber?: null;
+    /** ギルドコネクション専用か */
+    guild_connections?: null;
+    /** 利用可能な購入フラグ */
+    available_for_purchase?: null;
+  };
+}

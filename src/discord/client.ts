@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
-import { DiscordGuild, DiscordApiError, DiscordBotUser, DiscordGuildDetailed, DiscordChannel, DiscordGuildMember, DiscordMessage } from '../types/discord.js';
+import { DiscordGuild, DiscordApiError, DiscordBotUser, DiscordGuildDetailed, DiscordChannel, DiscordGuildMember, DiscordMessage, DiscordRole } from '../types/discord.js';
 
 /**
  * Discord REST API クライアント
@@ -150,6 +150,19 @@ export class DiscordClient {
   async getMessage(channelId: string, messageId: string): Promise<DiscordMessage> {
     try {
       const response = await this.http.get(`/channels/${channelId}/messages/${messageId}`);
+      return response.data;
+    } catch (error) {
+      this.handleApiError(error as AxiosError);
+      throw error;
+    }
+  }
+
+  /**
+   * 特定のサーバーのロール一覧を取得
+   */
+  async getGuildRoles(guildId: string): Promise<DiscordRole[]> {
+    try {
+      const response = await this.http.get(`/guilds/${guildId}/roles`);
       return response.data;
     } catch (error) {
       this.handleApiError(error as AxiosError);
