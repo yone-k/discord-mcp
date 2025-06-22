@@ -29,6 +29,11 @@ import {
   GetUserListInputSchema,
   GetUserListInput
 } from './tools/get-user-list.js';
+import {
+  getChannelMessages,
+  GetChannelMessagesInputSchema,
+  GetChannelMessagesInput
+} from './tools/get-channel-messages.js';
 
 /**
  * Discord MCP Server
@@ -144,6 +149,40 @@ class DiscordMCPServer {
               required: ['serverId'],
               additionalProperties: false
             }
+          },
+          {
+            name: 'get_channel_messages',
+            description: '特定のDiscordチャンネルのメッセージ履歴を取得します',
+            inputSchema: {
+              type: 'object',
+              properties: {
+                channelId: {
+                  type: 'string',
+                  description: 'メッセージを取得するチャンネルのID'
+                },
+                limit: {
+                  type: 'number',
+                  description: '取得するメッセージの最大数（デフォルト: 50、最大: 100）',
+                  minimum: 1,
+                  maximum: 100,
+                  default: 50
+                },
+                before: {
+                  type: 'string',
+                  description: '指定したメッセージIDより前のメッセージを取得'
+                },
+                after: {
+                  type: 'string',
+                  description: '指定したメッセージIDより後のメッセージを取得'
+                },
+                around: {
+                  type: 'string',
+                  description: '指定したメッセージIDの周辺のメッセージを取得'
+                }
+              },
+              required: ['channelId'],
+              additionalProperties: false
+            }
           }
         ],
       };
@@ -163,6 +202,8 @@ class DiscordMCPServer {
             return await this.handleGetChannelList(args);
           case 'get_user_list':
             return await this.handleGetUserList(args);
+          case 'get_channel_messages':
+            return await this.handleGetChannelMessages(args);
           default:
             throw new McpError(
               ErrorCode.MethodNotFound,
@@ -331,6 +372,46 @@ class DiscordMCPServer {
 
     // ユーザー一覧を取得
     const result = await getUserList(this.discordClient, input);
+
+    return {
+      content: [
+        {
+          type: 'text' as const,
+          text: JSON.stringify(result, null, 2)
+        }
+      ]
+    };
+  }
+
+  /**
+   * チャンネルメッセージ取得ツールのハンドラー
+   */
+  private async handleGetChannelMessages(args: unknown) {
+    // Discord クライアントの初期化（遅延初期化）
+    if (!this.discordClient) {
+      const token = process.env.DISCORD_TOKEN;
+      if (!token) {
+        throw new McpError(
+          ErrorCode.InvalidRequest,
+          'DISCORD_TOKEN環境変数が設定されていません'
+        );
+      }
+      this.discordClient = new DiscordClient(token);
+    }
+
+    // 入力バリデーション
+    let input: GetChannelMessagesInput;
+    try {
+      input = GetChannelMessagesInputSchema.parse(args || {});
+    } catch (error) {
+      throw new McpError(
+        ErrorCode.InvalidParams,
+        `無効なパラメータ: ${error instanceof Error ? error.message : String(error)}`
+      );
+    }
+
+    // チャンネルメッセージを取得
+    const result = await getChannelMessages(this.discordClient, input);
 
     return {
       content: [
