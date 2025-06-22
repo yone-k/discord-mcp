@@ -77,6 +77,46 @@ Get roles assigned to a specific Discord server member.
 - Filter options: adminOnly, excludeManaged
 - Includes member information plus role details and permissions analysis
 
+### get_voice_regions
+
+Get a list of available Discord voice regions.
+
+- Retrieves all available voice regions
+- Identifies optimal regions
+- Includes information about deprecated and custom regions
+
+### get_guild_invites
+
+Get a list of invite links for a specific Discord server.
+
+- Retrieves all invite links from the server
+- Detailed information including inviter, usage count, expiration
+- Includes target channel and server information
+
+### get_channel_invites
+
+Get a list of invite links for a specific Discord channel.
+
+- Retrieves invite links for the specified channel only
+- Detailed information including inviter, usage count, expiration
+- Includes target channel and server information
+
+### get_guild_webhooks
+
+Get a list of webhooks for a specific Discord server.
+
+- Retrieves all webhooks from the server
+- Information about webhook creator, type, and URL
+- Identifies follower webhooks and application webhooks
+
+### get_channel_webhooks
+
+Get a list of webhooks for a specific Discord channel.
+
+- Retrieves webhooks for the specified channel only
+- Information about webhook creator, type, and URL
+- Identifies follower webhooks and application webhooks
+
 ## Configuration
 
 To use these tools, you need:

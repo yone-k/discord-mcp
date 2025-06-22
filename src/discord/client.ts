@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
-import { DiscordGuild, DiscordApiError, DiscordBotUser, DiscordGuildDetailed, DiscordChannel, DiscordGuildMember, DiscordMessage, DiscordRole, DiscordVoiceRegion, DiscordVoiceState, DiscordInvite, DiscordWebhook } from '../types/discord.js';
+import { DiscordGuild, DiscordApiError, DiscordBotUser, DiscordGuildDetailed, DiscordChannel, DiscordGuildMember, DiscordMessage, DiscordRole, DiscordVoiceRegion, DiscordInvite, DiscordWebhook } from '../types/discord.js';
 
 /**
  * Discord REST API クライアント
@@ -209,18 +209,6 @@ export class DiscordClient {
     }
   }
 
-  /**
-   * 特定のサーバーのボイスステート一覧を取得
-   */
-  async getGuildVoiceStates(guildId: string): Promise<DiscordVoiceState[]> {
-    try {
-      const response = await this.http.get(`/guilds/${guildId}/voice-states`);
-      return response.data;
-    } catch (error) {
-      this.handleApiError(error as AxiosError);
-      throw error;
-    }
-  }
 
   /**
    * 特定のサーバーの招待リンク一覧を取得

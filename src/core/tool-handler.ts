@@ -56,11 +56,6 @@ import {
   GetVoiceRegionsInput
 } from '../tools/voice/get-voice-regions.js';
 import {
-  getGuildVoiceStates,
-  GetGuildVoiceStatesInputSchema,
-  GetGuildVoiceStatesInput
-} from '../tools/voice/get-guild-voice-states.js';
-import {
   getGuildInvites,
   GetGuildInvitesInputSchema,
   GetGuildInvitesInput
@@ -223,13 +218,6 @@ export class ToolHandler {
         return this.formatResponse(result);
       }
 
-      case 'get_guild_voice_states': {
-        const input = this.validateAndParseInput<GetGuildVoiceStatesInput>(
-          args, GetGuildVoiceStatesInputSchema, 'get_guild_voice_states'
-        );
-        const result = await getGuildVoiceStates(client, input);
-        return this.formatResponse(result);
-      }
 
       case 'get_guild_invites': {
         const input = this.validateAndParseInput<GetGuildInvitesInput>(

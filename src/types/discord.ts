@@ -324,34 +324,6 @@ export interface DiscordVoiceRegion {
   custom: boolean;
 }
 
-export interface DiscordVoiceState {
-  /** サーバーID */
-  guild_id?: string;
-  /** チャンネルID */
-  channel_id: string | null;
-  /** ユーザーID */
-  user_id: string;
-  /** ユーザー情報 */
-  member?: DiscordGuildMember;
-  /** セッションID */
-  session_id: string;
-  /** 聴覚障害があるかどうか */
-  deaf: boolean;
-  /** ミュートされているかどうか */
-  mute: boolean;
-  /** 自分で聴覚障害にしているか */
-  self_deaf: boolean;
-  /** 自分でミュートしているか */
-  self_mute: boolean;
-  /** ストリーミングしているか */
-  self_stream?: boolean;
-  /** ビデオを有効にしているか */
-  self_video: boolean;
-  /** マイクを抑制しているか */
-  suppress: boolean;
-  /** リクエスト発言時刻 */
-  request_to_speak_timestamp: string | null;
-}
 
 export interface DiscordInvite {
   /** 招待コード */

@@ -11,7 +11,6 @@ import { toolDefinition as getPinnedMessages } from './channels/get-pinned-messa
 import { toolDefinition as getGuildRoles } from './roles/get-guild-roles.js';
 import { toolDefinition as getMemberRoles } from './roles/get-member-roles.js';
 import { toolDefinition as getVoiceRegions } from './voice/get-voice-regions.js';
-import { toolDefinition as getGuildVoiceStates } from './voice/get-guild-voice-states.js';
 import { toolDefinition as getGuildInvites } from './invites/get-guild-invites.js';
 import { toolDefinition as getChannelInvites } from './invites/get-channel-invites.js';
 import { toolDefinition as getGuildWebhooks } from './webhooks/get-guild-webhooks.js';
@@ -31,7 +30,6 @@ export const registeredTools: ToolDefinition[] = [
   getGuildRoles,
   getMemberRoles,
   getVoiceRegions,
-  getGuildVoiceStates,
   getGuildInvites,
   getChannelInvites,
   getGuildWebhooks,
