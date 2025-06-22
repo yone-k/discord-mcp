@@ -117,6 +117,42 @@ Get a list of webhooks for a specific Discord channel.
 - Information about webhook creator, type, and URL
 - Identifies follower webhooks and application webhooks
 
+### send_message
+
+Send a message to a Discord channel.
+
+- Send text messages (up to 2000 characters)
+- TTS (text-to-speech) message support
+- Embed content support (up to 10 embeds)
+- Mentions and channel reference support
+
+### send_file
+
+Send a file to a Discord channel.
+
+- Send Base64 encoded files (up to 8MB)
+- File with message content support
+- Spoiler file support
+- MIME type specification available
+
+### edit_message
+
+Edit an existing Discord message.
+
+- Can only edit messages sent by yourself
+- Change message content (up to 2000 characters)
+- Update embed content support
+- Automatic edit history tracking
+
+### delete_message
+
+Delete a Discord message.
+
+- Delete your own messages or messages with appropriate permissions
+- Optional deletion reason (recorded in audit log)
+- Records deletion timestamp
+- Safe deletion processing based on permissions
+
 ## Configuration
 
 To use these tools, you need:
