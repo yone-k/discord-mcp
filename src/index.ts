@@ -44,6 +44,11 @@ import {
   GetPinnedMessagesInputSchema,
   GetPinnedMessagesInput
 } from './tools/get-pinned-messages.js';
+import {
+  getGuildRoles,
+  GetGuildRolesInputSchema,
+  GetGuildRolesInput
+} from './tools/get-guild-roles.js';
 
 /**
  * Discord MCP Server
@@ -227,6 +232,36 @@ class DiscordMCPServer {
               required: ['channelId'],
               additionalProperties: false
             }
+          },
+          {
+            name: 'get_guild_roles',
+            description: '特定のDiscordサーバーのロール一覧を取得します',
+            inputSchema: {
+              type: 'object',
+              properties: {
+                guildId: {
+                  type: 'string',
+                  description: 'ロール一覧を取得するサーバーのID'
+                },
+                adminOnly: {
+                  type: 'boolean',
+                  description: '管理者権限を持つロールのみ取得',
+                  default: false
+                },
+                excludeManaged: {
+                  type: 'boolean',
+                  description: '管理ロール（Bot、統合など）を除外',
+                  default: false
+                },
+                includeDetails: {
+                  type: 'boolean',
+                  description: '詳細情報（タグ、アイコンなど）を含めるかどうか',
+                  default: false
+                }
+              },
+              required: ['guildId'],
+              additionalProperties: false
+            }
           }
         ],
       };
@@ -252,6 +287,8 @@ class DiscordMCPServer {
             return await this.handleGetMessage(args);
           case 'get_pinned_messages':
             return await this.handleGetPinnedMessages(args);
+          case 'get_guild_roles':
+            return await this.handleGetGuildRoles(args);
           default:
             throw new McpError(
               ErrorCode.MethodNotFound,
@@ -540,6 +577,46 @@ class DiscordMCPServer {
 
     // ピン留めメッセージを取得
     const result = await getPinnedMessages(this.discordClient, input);
+
+    return {
+      content: [
+        {
+          type: 'text' as const,
+          text: JSON.stringify(result, null, 2)
+        }
+      ]
+    };
+  }
+
+  /**
+   * サーバーロール取得ツールのハンドラー
+   */
+  private async handleGetGuildRoles(args: unknown) {
+    // Discord クライアントの初期化（遅延初期化）
+    if (!this.discordClient) {
+      const token = process.env.DISCORD_TOKEN;
+      if (!token) {
+        throw new McpError(
+          ErrorCode.InvalidRequest,
+          'DISCORD_TOKEN環境変数が設定されていません'
+        );
+      }
+      this.discordClient = new DiscordClient(token);
+    }
+
+    // 入力バリデーション
+    let input: GetGuildRolesInput;
+    try {
+      input = GetGuildRolesInputSchema.parse(args || {});
+    } catch (error) {
+      throw new McpError(
+        ErrorCode.InvalidParams,
+        `無効なパラメータ: ${error instanceof Error ? error.message : String(error)}`
+      );
+    }
+
+    // サーバーロールを取得
+    const result = await getGuildRoles(this.discordClient, input);
 
     return {
       content: [
