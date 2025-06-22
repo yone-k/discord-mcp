@@ -34,6 +34,11 @@ import {
   GetChannelMessagesInputSchema,
   GetChannelMessagesInput
 } from './tools/get-channel-messages.js';
+import {
+  getMessage,
+  GetMessageInputSchema,
+  GetMessageInput
+} from './tools/get-message.js';
 
 /**
  * Discord MCP Server
@@ -183,6 +188,25 @@ class DiscordMCPServer {
               required: ['channelId'],
               additionalProperties: false
             }
+          },
+          {
+            name: 'get_message',
+            description: '特定のDiscordメッセージの詳細情報を取得します',
+            inputSchema: {
+              type: 'object',
+              properties: {
+                channelId: {
+                  type: 'string',
+                  description: 'メッセージが存在するチャンネルのID'
+                },
+                messageId: {
+                  type: 'string',
+                  description: '取得するメッセージのID'
+                }
+              },
+              required: ['channelId', 'messageId'],
+              additionalProperties: false
+            }
           }
         ],
       };
@@ -204,6 +228,8 @@ class DiscordMCPServer {
             return await this.handleGetUserList(args);
           case 'get_channel_messages':
             return await this.handleGetChannelMessages(args);
+          case 'get_message':
+            return await this.handleGetMessage(args);
           default:
             throw new McpError(
               ErrorCode.MethodNotFound,
@@ -412,6 +438,46 @@ class DiscordMCPServer {
 
     // チャンネルメッセージを取得
     const result = await getChannelMessages(this.discordClient, input);
+
+    return {
+      content: [
+        {
+          type: 'text' as const,
+          text: JSON.stringify(result, null, 2)
+        }
+      ]
+    };
+  }
+
+  /**
+   * メッセージ取得ツールのハンドラー
+   */
+  private async handleGetMessage(args: unknown) {
+    // Discord クライアントの初期化（遅延初期化）
+    if (!this.discordClient) {
+      const token = process.env.DISCORD_TOKEN;
+      if (!token) {
+        throw new McpError(
+          ErrorCode.InvalidRequest,
+          'DISCORD_TOKEN環境変数が設定されていません'
+        );
+      }
+      this.discordClient = new DiscordClient(token);
+    }
+
+    // 入力バリデーション
+    let input: GetMessageInput;
+    try {
+      input = GetMessageInputSchema.parse(args || {});
+    } catch (error) {
+      throw new McpError(
+        ErrorCode.InvalidParams,
+        `無効なパラメータ: ${error instanceof Error ? error.message : String(error)}`
+      );
+    }
+
+    // メッセージを取得
+    const result = await getMessage(this.discordClient, input);
 
     return {
       content: [
