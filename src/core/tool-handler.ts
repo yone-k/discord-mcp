@@ -34,7 +34,7 @@ import {
   getMessage,
   GetMessageInputSchema,
   GetMessageInput
-} from '../tools/channels/get-message.js';
+} from '../tools/messages/get-message.js';
 import {
   getPinnedMessages,
   GetPinnedMessagesInputSchema,
@@ -75,6 +75,26 @@ import {
   GetChannelWebhooksInputSchema,
   GetChannelWebhooksInput
 } from '../tools/webhooks/get-channel-webhooks.js';
+import {
+  sendMessage,
+  SendMessageInputSchema,
+  SendMessageInput
+} from '../tools/messages/send-message.js';
+import {
+  sendFile,
+  SendFileInputSchema,
+  SendFileInput
+} from '../tools/messages/send-file.js';
+import {
+  editMessage,
+  EditMessageInputSchema,
+  EditMessageInput
+} from '../tools/messages/edit-message.js';
+import {
+  deleteMessage,
+  DeleteMessageInputSchema,
+  DeleteMessageInput
+} from '../tools/messages/delete-message.js';
 
 /**
  * ツールハンドラーの共通クラス
@@ -248,6 +268,38 @@ export class ToolHandler {
           args, GetChannelWebhooksInputSchema, 'get_channel_webhooks'
         );
         const result = await getChannelWebhooks(client, input);
+        return this.formatResponse(result);
+      }
+
+      case 'send_message': {
+        const input = this.validateAndParseInput<SendMessageInput>(
+          args, SendMessageInputSchema, 'send_message'
+        );
+        const result = await sendMessage(client, input);
+        return this.formatResponse(result);
+      }
+
+      case 'send_file': {
+        const input = this.validateAndParseInput<SendFileInput>(
+          args, SendFileInputSchema, 'send_file'
+        );
+        const result = await sendFile(client, input);
+        return this.formatResponse(result);
+      }
+
+      case 'edit_message': {
+        const input = this.validateAndParseInput<EditMessageInput>(
+          args, EditMessageInputSchema, 'edit_message'
+        );
+        const result = await editMessage(client, input);
+        return this.formatResponse(result);
+      }
+
+      case 'delete_message': {
+        const input = this.validateAndParseInput<DeleteMessageInput>(
+          args, DeleteMessageInputSchema, 'delete_message'
+        );
+        const result = await deleteMessage(client, input);
         return this.formatResponse(result);
       }
 
