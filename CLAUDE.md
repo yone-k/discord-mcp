@@ -29,17 +29,26 @@ Discord APIとの統合機能を提供するMCP (Model Context Protocol) サー�
 discord-mcp/
 ├── src/
 │   ├── core/              # MCPサーバーのコア機能
+│   │   └── tool-handler.ts    # 共通ツールハンドラー
 │   ├── discord/           # Discord API統合機能
 │   ├── tools/             # MCPツール実装
+│   │   ├── registry.ts         # ツールレジストリ
+│   │   └── get-*.ts           # 各ツール実装
 │   ├── types/             # 型定義
 │   ├── utils/             # ユーティリティ関数
-│   └── index.ts           # エントリーポイント
+│   └── index.ts           # エントリーポイント（簡素化済み）
 ├── docs/                  # プロジェクト全体のドキュメント
 │   ├── architecture/      # アーキテクチャ設計書
 │   ├── api/               # Discord API仕様書
 │   └── deployment/        # デプロイ手順
 └── CLAUDE.md              # このファイル
 ```
+
+### ツール管理アーキテクチャ
+
+**ツールレジストリパターン**: 各ツールファイルにMCP定義を含め、`registry.ts`で一元管理
+**動的ツール登録**: `index.ts`はレジストリから動的にツール一覧を取得
+**共通ハンドラー**: `ToolHandler`クラスがDiscordクライアント初期化とエラーハンドリングを統一
 
 ## 開発ガイドライン
 
@@ -57,6 +66,17 @@ discord-mcp/
 - **レビュープロセス**: Pull Request必須、1名以上のレビュー
 - **テスト戦略**: ユニットテスト + 統合テスト (Jest使用予定)
 - **ツール追加時**: 新しいMCPツールを追加した場合は、必ずTOOLLIST.md（日本語版・英語版）を更新
+
+### 新規ツール追加フロー
+
+1. **ツールファイルの作成**: `src/tools/get-new-feature.ts`
+2. **ツール定義の追加**: ファイル内に`toolDefinition`エクスポートを含める
+3. **レジストリへの登録**: `src/tools/registry.ts`のインポートとリストに追加
+4. **ハンドラーの追加**: `src/core/tool-handler.ts`のswitchケースに追加
+5. **テストの作成**: `src/tools/get-new-feature.test.ts`
+6. **ドキュメント更新**: TOOLLIST.mdを更新
+
+※ `index.ts`の編集は不要（動的登録のため）
 
 ### 開発コマンド
 
