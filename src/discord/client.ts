@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
-import { DiscordGuild, DiscordApiError, DiscordBotUser, DiscordGuildDetailed, DiscordChannel, DiscordGuildMember, DiscordMessage, DiscordRole } from '../types/discord.js';
+import { DiscordGuild, DiscordApiError, DiscordBotUser, DiscordGuildDetailed, DiscordChannel, DiscordGuildMember, DiscordMessage, DiscordRole, DiscordVoiceRegion, DiscordVoiceState, DiscordInvite, DiscordWebhook } from '../types/discord.js';
 
 /**
  * Discord REST API クライアント
@@ -189,6 +189,84 @@ export class DiscordClient {
   async getGuildMember(guildId: string, userId: string): Promise<DiscordGuildMember> {
     try {
       const response = await this.http.get(`/guilds/${guildId}/members/${userId}`);
+      return response.data;
+    } catch (error) {
+      this.handleApiError(error as AxiosError);
+      throw error;
+    }
+  }
+
+  /**
+   * 利用可能なボイスリージョン一覧を取得
+   */
+  async getVoiceRegions(): Promise<DiscordVoiceRegion[]> {
+    try {
+      const response = await this.http.get('/voice/regions');
+      return response.data;
+    } catch (error) {
+      this.handleApiError(error as AxiosError);
+      throw error;
+    }
+  }
+
+  /**
+   * 特定のサーバーのボイスステート一覧を取得
+   */
+  async getGuildVoiceStates(guildId: string): Promise<DiscordVoiceState[]> {
+    try {
+      const response = await this.http.get(`/guilds/${guildId}/voice-states`);
+      return response.data;
+    } catch (error) {
+      this.handleApiError(error as AxiosError);
+      throw error;
+    }
+  }
+
+  /**
+   * 特定のサーバーの招待リンク一覧を取得
+   */
+  async getGuildInvites(guildId: string): Promise<DiscordInvite[]> {
+    try {
+      const response = await this.http.get(`/guilds/${guildId}/invites`);
+      return response.data;
+    } catch (error) {
+      this.handleApiError(error as AxiosError);
+      throw error;
+    }
+  }
+
+  /**
+   * 特定のチャンネルの招待リンク一覧を取得
+   */
+  async getChannelInvites(channelId: string): Promise<DiscordInvite[]> {
+    try {
+      const response = await this.http.get(`/channels/${channelId}/invites`);
+      return response.data;
+    } catch (error) {
+      this.handleApiError(error as AxiosError);
+      throw error;
+    }
+  }
+
+  /**
+   * 特定のサーバーのWebhook一覧を取得
+   */
+  async getGuildWebhooks(guildId: string): Promise<DiscordWebhook[]> {
+    try {
+      const response = await this.http.get(`/guilds/${guildId}/webhooks`);
+      return response.data;
+    } catch (error) {
+      this.handleApiError(error as AxiosError);
+      throw error;
+    }
+  }
+
+  /**
+   * 特定のチャンネルのWebhook一覧を取得
+   */
+  async getChannelWebhooks(channelId: string): Promise<DiscordWebhook[]> {
+    try {
+      const response = await this.http.get(`/channels/${channelId}/webhooks`);
       return response.data;
     } catch (error) {
       this.handleApiError(error as AxiosError);

@@ -310,3 +310,140 @@ export interface DiscordRole {
     available_for_purchase?: null;
   };
 }
+
+export interface DiscordVoiceRegion {
+  /** ボイスリージョンID */
+  id: string;
+  /** ボイスリージョン名 */
+  name: string;
+  /** 最適化されているか */
+  optimal: boolean;
+  /** 非推奨か */
+  deprecated: boolean;
+  /** カスタムか */
+  custom: boolean;
+}
+
+export interface DiscordVoiceState {
+  /** サーバーID */
+  guild_id?: string;
+  /** チャンネルID */
+  channel_id: string | null;
+  /** ユーザーID */
+  user_id: string;
+  /** ユーザー情報 */
+  member?: DiscordGuildMember;
+  /** セッションID */
+  session_id: string;
+  /** 聴覚障害があるかどうか */
+  deaf: boolean;
+  /** ミュートされているかどうか */
+  mute: boolean;
+  /** 自分で聴覚障害にしているか */
+  self_deaf: boolean;
+  /** 自分でミュートしているか */
+  self_mute: boolean;
+  /** ストリーミングしているか */
+  self_stream?: boolean;
+  /** ビデオを有効にしているか */
+  self_video: boolean;
+  /** マイクを抑制しているか */
+  suppress: boolean;
+  /** リクエスト発言時刻 */
+  request_to_speak_timestamp: string | null;
+}
+
+export interface DiscordInvite {
+  /** 招待コード */
+  code: string;
+  /** サーバー情報 */
+  guild?: {
+    id: string;
+    name: string;
+    icon?: string | null;
+    description?: string | null;
+    splash?: string | null;
+    discovery_splash?: string | null;
+    features: string[];
+    verification_level: number;
+    vanity_url_code?: string | null;
+    nsfw_level: number;
+    premium_subscription_count?: number;
+  };
+  /** チャンネル情報 */
+  channel: {
+    id: string;
+    name: string;
+    type: number;
+  };
+  /** 招待者情報 */
+  inviter?: DiscordUser;
+  /** 対象ユーザー */
+  target_user?: DiscordUser;
+  /** 対象アプリケーション */
+  target_application?: {
+    id: string;
+    name: string;
+    icon?: string | null;
+    description: string;
+  };
+  /** 近似メンバー数 */
+  approximate_member_count?: number;
+  /** 近似オンラインメンバー数 */
+  approximate_presence_count?: number;
+  /** 有効期限日時 */
+  expires_at?: string | null;
+  /** ステージインスタンス */
+  stage_instance?: {
+    members: DiscordGuildMember[];
+    participant_count: number;
+    speaker_count: number;
+    topic: string;
+  };
+  /** 招待タイプ */
+  type: number;
+  /** 使用回数 */
+  uses?: number;
+  /** 最大使用回数 */
+  max_uses?: number;
+  /** 最大有効期間（秒） */
+  max_age?: number;
+  /** 一時的メンバーシップか */
+  temporary?: boolean;
+  /** 作成日時 */
+  created_at?: string;
+}
+
+export interface DiscordWebhook {
+  /** WebhookのID */
+  id: string;
+  /** Webhookのタイプ */
+  type: number;
+  /** サーバーID */
+  guild_id?: string;
+  /** チャンネルID */
+  channel_id: string | null;
+  /** ユーザー情報（作成者） */
+  user?: DiscordUser;
+  /** Webhookの名前 */
+  name: string | null;
+  /** Webhookのアバター */
+  avatar: string | null;
+  /** Webhookのトークン */
+  token?: string;
+  /** アプリケーションID */
+  application_id: string | null;
+  /** ソースサーバー */
+  source_guild?: {
+    id: string;
+    name: string;
+    icon: string | null;
+  };
+  /** ソースチャンネル */
+  source_channel?: {
+    id: string;
+    name: string;
+  };
+  /** WebhookのURL */
+  url?: string;
+}
