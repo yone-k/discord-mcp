@@ -1,15 +1,15 @@
 import { ToolDefinition } from '../types/mcp.js';
 
 // 各ツールから定義をインポート
-import { toolDefinition as getServerList } from './get-server-list.js';
-import { toolDefinition as getServerDetails } from './get-server-details.js';
-import { toolDefinition as getChannelList } from './get-channel-list.js';
-import { toolDefinition as getUserList } from './get-user-list.js';
-import { toolDefinition as getChannelMessages } from './get-channel-messages.js';
-import { toolDefinition as getMessage } from './get-message.js';
-import { toolDefinition as getPinnedMessages } from './get-pinned-messages.js';
-import { toolDefinition as getGuildRoles } from './get-guild-roles.js';
-import { toolDefinition as getMemberRoles } from './get-member-roles.js';
+import { toolDefinition as getServerList } from './servers/get-server-list.js';
+import { toolDefinition as getServerDetails } from './servers/get-server-details.js';
+import { toolDefinition as getChannelList } from './channels/get-channel-list.js';
+import { toolDefinition as getUserList } from './users/get-user-list.js';
+import { toolDefinition as getChannelMessages } from './channels/get-channel-messages.js';
+import { toolDefinition as getMessage } from './channels/get-message.js';
+import { toolDefinition as getPinnedMessages } from './channels/get-pinned-messages.js';
+import { toolDefinition as getGuildRoles } from './roles/get-guild-roles.js';
+import { toolDefinition as getMemberRoles } from './roles/get-member-roles.js';
 
 /**
  * 登録されたツール定義の一覧

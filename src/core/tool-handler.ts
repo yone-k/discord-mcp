@@ -9,47 +9,47 @@ import {
   getServerList, 
   GetServerListInputSchema, 
   GetServerListInput 
-} from '../tools/get-server-list.js';
+} from '../tools/servers/get-server-list.js';
 import {
   getServerDetails,
   GetServerDetailsInputSchema,
   GetServerDetailsInput
-} from '../tools/get-server-details.js';
+} from '../tools/servers/get-server-details.js';
 import {
   getChannelList,
   GetChannelListInputSchema,
   GetChannelListInput
-} from '../tools/get-channel-list.js';
+} from '../tools/channels/get-channel-list.js';
 import {
   getUserList,
   GetUserListInputSchema,
   GetUserListInput
-} from '../tools/get-user-list.js';
+} from '../tools/users/get-user-list.js';
 import {
   getChannelMessages,
   GetChannelMessagesInputSchema,
   GetChannelMessagesInput
-} from '../tools/get-channel-messages.js';
+} from '../tools/channels/get-channel-messages.js';
 import {
   getMessage,
   GetMessageInputSchema,
   GetMessageInput
-} from '../tools/get-message.js';
+} from '../tools/channels/get-message.js';
 import {
   getPinnedMessages,
   GetPinnedMessagesInputSchema,
   GetPinnedMessagesInput
-} from '../tools/get-pinned-messages.js';
+} from '../tools/channels/get-pinned-messages.js';
 import {
   getGuildRoles,
   GetGuildRolesInputSchema,
   GetGuildRolesInput
-} from '../tools/get-guild-roles.js';
+} from '../tools/roles/get-guild-roles.js';
 import {
   getMemberRoles,
   GetMemberRolesInputSchema,
   GetMemberRolesInput
-} from '../tools/get-member-roles.js';
+} from '../tools/roles/get-member-roles.js';
 
 /**
  * ツールハンドラーの共通クラス
