@@ -103,6 +103,7 @@ describe('getUserList', () => {
 
     const result = await getUserList(mockDiscordClient, {
       serverId: '987654321098765432',
+      limit: 100,
       includeDetails: true
     });
 
@@ -160,6 +161,8 @@ describe('getUserList', () => {
 
     const result = await getUserList(mockDiscordClient, {
       serverId: '987654321098765432',
+      limit: 100,
+      includeDetails: false,
       roleId: '987654321098765432'
     });
 
@@ -190,7 +193,8 @@ describe('getUserList', () => {
 
     const result = await getUserList(mockDiscordClient, {
       serverId: '987654321098765432',
-      limit: 100
+      limit: 100,
+      includeDetails: false
     });
 
     expect(result.hasMore).toBe(true);
@@ -215,7 +219,9 @@ describe('getUserList', () => {
     mockDiscordClient.getGuildMembers.mockResolvedValue(mockMembers);
 
     const result = await getUserList(mockDiscordClient, {
-      serverId: '987654321098765432'
+      serverId: '987654321098765432',
+      limit: 100,
+      includeDetails: false
     });
 
     expect(result.users).toHaveLength(1);
@@ -228,7 +234,7 @@ describe('getUserList', () => {
     mockDiscordClient.getGuildMembers.mockRejectedValue(discordError);
 
     await expect(
-      getUserList(mockDiscordClient, { serverId: '987654321098765432' })
+      getUserList(mockDiscordClient, { serverId: '987654321098765432', limit: 100, includeDetails: false })
     ).rejects.toThrow('ユーザー一覧の取得に失敗しました: サーバーが見つかりません');
   });
 
@@ -236,7 +242,7 @@ describe('getUserList', () => {
     mockDiscordClient.getGuildMembers.mockRejectedValue('不明なエラー');
 
     await expect(
-      getUserList(mockDiscordClient, { serverId: '987654321098765432' })
+      getUserList(mockDiscordClient, { serverId: '987654321098765432', limit: 100, includeDetails: false })
     ).rejects.toThrow('ユーザー一覧の取得に失敗しました: ユーザー一覧の取得中に不明なエラーが発生しました');
   });
 
