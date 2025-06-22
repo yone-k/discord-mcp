@@ -132,6 +132,7 @@ npm run dev
 - `npm run dev` - ts-nodeを使用して開発モードで開始
 - `npm run lint` - ESLintを実行
 - `npm run typecheck` - TypeScriptの型チェックを実行
+- `npm run docker:build` - Dockerイメージをビルド
 
 ## プロジェクト構造
 
