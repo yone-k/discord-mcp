@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
-import { DiscordGuild, DiscordApiError, DiscordBotUser, DiscordGuildDetailed, DiscordChannel, DiscordGuildMember } from '../types/discord.js';
+import { DiscordGuild, DiscordApiError, DiscordBotUser, DiscordGuildDetailed, DiscordChannel, DiscordGuildMember, DiscordMessage } from '../types/discord.js';
 
 /**
  * Discord REST API クライアント
@@ -105,6 +105,38 @@ export class DiscordClient {
       }
 
       const response = await this.http.get(`/guilds/${guildId}/members?${params.toString()}`);
+      return response.data;
+    } catch (error) {
+      this.handleApiError(error as AxiosError);
+      throw error;
+    }
+  }
+
+  /**
+   * 特定のチャンネルのメッセージ一覧を取得
+   */
+  async getChannelMessages(channelId: string, options?: {
+    limit?: number;
+    before?: string;
+    after?: string;
+    around?: string;
+  }): Promise<DiscordMessage[]> {
+    try {
+      const params = new URLSearchParams();
+      if (options?.limit) {
+        params.append('limit', Math.min(options.limit, 100).toString());
+      }
+      if (options?.before) {
+        params.append('before', options.before);
+      }
+      if (options?.after) {
+        params.append('after', options.after);
+      }
+      if (options?.around) {
+        params.append('around', options.around);
+      }
+
+      const response = await this.http.get(`/channels/${channelId}/messages?${params.toString()}`);
       return response.data;
     } catch (error) {
       this.handleApiError(error as AxiosError);

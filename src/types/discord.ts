@@ -155,3 +155,122 @@ export interface DiscordUser {
   /** 公開フラグ */
   public_flags?: number;
 }
+
+export interface DiscordMessage {
+  /** メッセージID */
+  id: string;
+  /** チャンネルID */
+  channel_id: string;
+  /** サーバーID */
+  guild_id?: string;
+  /** 送信者情報 */
+  author: DiscordUser;
+  /** メンバー情報 */
+  member?: DiscordGuildMember;
+  /** メッセージ内容 */
+  content: string;
+  /** 送信日時 */
+  timestamp: string;
+  /** 編集日時 */
+  edited_timestamp?: string | null;
+  /** TTS（読み上げ）かどうか */
+  tts: boolean;
+  /** @everyone または @here が含まれるか */
+  mention_everyone: boolean;
+  /** メンション対象ユーザー一覧 */
+  mentions: DiscordUser[];
+  /** メンション対象ロール一覧 */
+  mention_roles: string[];
+  /** 添付ファイル一覧 */
+  attachments: DiscordAttachment[];
+  /** 埋め込みコンテンツ一覧 */
+  embeds: DiscordEmbed[];
+  /** リアクション一覧 */
+  reactions?: DiscordReaction[];
+  /** メッセージタイプ */
+  type: number;
+  /** メッセージフラグ */
+  flags?: number;
+  /** ピン留めされているか */
+  pinned: boolean;
+  /** Webhook ID */
+  webhook_id?: string;
+}
+
+export interface DiscordAttachment {
+  /** 添付ファイルID */
+  id: string;
+  /** ファイル名 */
+  filename: string;
+  /** ファイルサイズ（バイト） */
+  size: number;
+  /** ファイルURL */
+  url: string;
+  /** プロキシURL */
+  proxy_url: string;
+  /** 画像の高さ */
+  height?: number | null;
+  /** 画像の幅 */
+  width?: number | null;
+}
+
+export interface DiscordEmbed {
+  /** タイトル */
+  title?: string;
+  /** タイプ */
+  type?: string;
+  /** 説明 */
+  description?: string;
+  /** URL */
+  url?: string;
+  /** タイムスタンプ */
+  timestamp?: string;
+  /** カラー */
+  color?: number;
+  /** フッター */
+  footer?: {
+    text: string;
+    icon_url?: string;
+    proxy_icon_url?: string;
+  };
+  /** 画像 */
+  image?: {
+    url?: string;
+    proxy_url?: string;
+    height?: number;
+    width?: number;
+  };
+  /** サムネイル */
+  thumbnail?: {
+    url?: string;
+    proxy_url?: string;
+    height?: number;
+    width?: number;
+  };
+  /** 作成者 */
+  author?: {
+    name?: string;
+    url?: string;
+    icon_url?: string;
+    proxy_icon_url?: string;
+  };
+  /** フィールド一覧 */
+  fields?: {
+    name: string;
+    value: string;
+    inline?: boolean;
+  }[];
+}
+
+export interface DiscordReaction {
+  /** リアクション数 */
+  count: number;
+  /** 自分がリアクションしたか */
+  me: boolean;
+  /** 絵文字情報 */
+  emoji: {
+    id?: string | null;
+    name?: string | null;
+    animated?: boolean;
+  };
+}
