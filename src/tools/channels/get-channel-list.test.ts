@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getChannelList, GetChannelListInputSchema } from './get-channel-list.js';
-import { DiscordChannel } from '../types/discord.js';
+import { DiscordChannel } from '../../types/discord.js';
 
 // DiscordClient のモック
-vi.mock('../discord/client.js');
+vi.mock('../../discord/client.js');
 
 describe('getChannelList', () => {
   let mockDiscordClient: any;

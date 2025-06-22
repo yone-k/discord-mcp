@@ -1,10 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getServerList, GetServerListInputSchema } from './get-server-list';
-import { DiscordClient } from '../discord/client';
-import { ToolDefinition } from '../types/mcp.js';import { DiscordGuild } from '../types/discord';
+import { DiscordClient } from '../../discord/client';
+import { ToolDefinition } from '../../types/mcp.js';
+import { DiscordGuild } from '../../types/discord';
 
 // Discord Client をモック
-vi.mock('../discord/client');
+vi.mock('../../discord/client');
 
 describe('getServerList', () => {
   let mockClient: DiscordClient;

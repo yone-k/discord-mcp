@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { DiscordClient } from '../discord/client.js';
-import { ToolDefinition } from '../types/mcp.js';
+import { DiscordClient } from '../../discord/client.js';
+import { ToolDefinition } from '../../types/mcp.js';
 
 /**
  * チャンネルメッセージ取得ツールの入力スキーマ

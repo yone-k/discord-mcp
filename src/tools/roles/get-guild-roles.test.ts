@@ -1,10 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { DiscordClient } from '../discord/client.js';
-import { ToolDefinition } from '../types/mcp.js';import { getGuildRoles, GetGuildRolesInputSchema } from './get-guild-roles.js';
-import { DiscordRole } from '../types/discord.js';
+import { DiscordClient } from '../../discord/client.js';
+import { ToolDefinition } from '../../types/mcp.js';
+import { getGuildRoles, GetGuildRolesInputSchema } from './get-guild-roles.js';
+import { DiscordRole } from '../../types/discord.js';
 
 // DiscordClientのモック
-vi.mock('../discord/client.js');
+vi.mock('../../discord/client.js');
 
 describe('getGuildRoles', () => {
   let mockDiscordClient: vi.Mocked<DiscordClient>;

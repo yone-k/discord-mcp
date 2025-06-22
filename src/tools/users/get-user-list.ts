@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { DiscordClient } from '../discord/client.js';
-import { ToolDefinition } from '../types/mcp.js';
+import { DiscordClient } from '../../discord/client.js';
+import { ToolDefinition } from '../../types/mcp.js';
 
 /**
  * ユーザー一覧取得ツールの入力スキーマ

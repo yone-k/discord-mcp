@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getUserList, GetUserListInputSchema } from './get-user-list.js';
-import { DiscordGuildMember } from '../types/discord.js';
+import { DiscordGuildMember } from '../../types/discord.js';
 
 // DiscordClient のモック
-vi.mock('../discord/client.js');
+vi.mock('../../discord/client.js');
 
 describe('getUserList', () => {
   let mockDiscordClient: any;
