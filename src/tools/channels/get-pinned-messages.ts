@@ -1,38 +1,41 @@
 import { z } from 'zod';
-import { DiscordClient } from '../discord/client.js';
+import { DiscordClient } from '../../discord/client.js';
+import { ToolDefinition } from '../../types/mcp.js';
 
 /**
- * チャンネルメッセージ取得ツールの入力スキーマ
+ * ピン留めメッセージ取得ツールの入力スキーマ
  */
-export const GetChannelMessagesInputSchema = z.object({
+export const GetPinnedMessagesInputSchema = z.object({
   /** チャンネルID（必須） */
-  channelId: z.string().min(1, 'チャンネルIDは必須です'),
-  /** 取得する最大数（オプション、デフォルト: 50、最大: 100） */
-  limit: z.number().min(1).max(100).optional().default(50),
-  /** 指定したメッセージIDより前のメッセージを取得 */
-  before: z.string().optional(),
-  /** 指定したメッセージIDより後のメッセージを取得 */
-  after: z.string().optional(),
-  /** 指定したメッセージIDの周辺のメッセージを取得 */
-  around: z.string().optional()
-}).strict().refine(
-  (data) => {
-    // before, after, aroundのうち複数が指定されている場合はエラー
-    const paginationParams = [data.before, data.after, data.around].filter(Boolean);
-    return paginationParams.length <= 1;
-  },
-  {
-    message: 'before, after, around のうち複数のパラメータを同時に指定することはできません'
-  }
-);
+  channelId: z.string().min(1, 'チャンネルIDは必須です')
+}).strict();
 
-export type GetChannelMessagesInput = z.infer<typeof GetChannelMessagesInputSchema>;
+export type GetPinnedMessagesInput = z.infer<typeof GetPinnedMessagesInputSchema>;
 
 /**
- * チャンネルメッセージ取得ツールの出力スキーマ
+ * MCP ツール定義
  */
-export const GetChannelMessagesOutputSchema = z.object({
-  /** メッセージ一覧 */
+export const toolDefinition: ToolDefinition = {
+  name: 'get_pinned_messages',
+  description: '特定のDiscordチャンネルのピン留めメッセージ一覧を取得します',
+  inputSchema: {
+    type: 'object' as const,
+    properties: {
+      channelId: {
+        type: 'string',
+        description: 'ピン留めメッセージを取得するチャンネルのID'
+      }
+    },
+    required: ['channelId'],
+    additionalProperties: false
+  }
+};
+
+/**
+ * ピン留めメッセージ取得ツールの出力スキーマ
+ */
+export const GetPinnedMessagesOutputSchema = z.object({
+  /** ピン留めメッセージ一覧 */
   messages: z.array(z.object({
     /** メッセージID */
     id: z.string(),
@@ -105,42 +108,30 @@ export const GetChannelMessagesOutputSchema = z.object({
     })).optional(),
     /** メッセージタイプ */
     type: z.number(),
-    /** ピン留めされているか */
+    /** ピン留めされているか（常にtrue） */
     pinned: z.boolean(),
     /** Webhook送信かどうか */
     isWebhook: z.boolean()
   })),
-  /** 総メッセージ数（取得できた分） */
+  /** 総ピン留めメッセージ数 */
   totalCount: z.number(),
-  /** 取得したメッセージの最古のID */
+  /** 最も古いピン留めメッセージID */
   oldestMessageId: z.string().nullable(),
-  /** 取得したメッセージの最新のID */
+  /** 最も新しいピン留めメッセージID */
   newestMessageId: z.string().nullable()
 });
 
-export type GetChannelMessagesOutput = z.infer<typeof GetChannelMessagesOutputSchema>;
+export type GetPinnedMessagesOutput = z.infer<typeof GetPinnedMessagesOutputSchema>;
 
 /**
- * 特定のDiscordチャンネルのメッセージ一覧を取得
+ * 特定のDiscordチャンネルのピン留めメッセージ一覧を取得
  */
-export async function getChannelMessages(
+export async function getPinnedMessages(
   discordClient: DiscordClient,
-  input: GetChannelMessagesInput
-): Promise<GetChannelMessagesOutput> {
+  input: GetPinnedMessagesInput
+): Promise<GetPinnedMessagesOutput> {
   try {
-    const options: any = {};
-    
-    if (input.limit !== undefined) {
-      options.limit = input.limit;
-    } else {
-      options.limit = 50; // デフォルト値
-    }
-    
-    if (input.before) options.before = input.before;
-    if (input.after) options.after = input.after;
-    if (input.around) options.around = input.around;
-
-    const messages = await discordClient.getChannelMessages(input.channelId, options);
+    const messages = await discordClient.getPinnedMessages(input.channelId);
 
     const processedMessages = messages.map(message => {
       const author = {
@@ -207,7 +198,7 @@ export async function getChannelMessages(
       };
     });
 
-    // メッセージは新しい順で返されるため、最古・最新のIDを取得
+    // ピン留めメッセージは新しい順で返されるため、最古・最新のIDを取得
     const oldestMessageId = processedMessages.length > 0 
       ? processedMessages[processedMessages.length - 1].id 
       : null;
@@ -222,7 +213,7 @@ export async function getChannelMessages(
       newestMessageId
     };
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'チャンネルメッセージの取得中に不明なエラーが発生しました';
-    throw new Error(`チャンネルメッセージの取得に失敗しました: ${errorMessage}`);
+    const errorMessage = error instanceof Error ? error.message : 'ピン留めメッセージの取得中に不明なエラーが発生しました';
+    throw new Error(`ピン留めメッセージの取得に失敗しました: ${errorMessage}`);
   }
 }

@@ -1,6 +1,8 @@
 import { z } from 'zod';
-import { DiscordClient } from '../discord/client.js';
-import { DiscordGuildDetailed } from '../types/discord.js';
+import { DiscordClient } from '../../discord/client.js';
+import { ToolDefinition } from '../../types/mcp.js';
+// import { DiscordGuildDetailed } from '../types/discord.js';
+
 
 /**
  * サーバー詳細情報取得ツールの入力スキーマ
@@ -8,6 +10,25 @@ import { DiscordGuildDetailed } from '../types/discord.js';
 export const GetServerDetailsInputSchema = z.object({
   serverId: z.string().min(1, 'サーバーIDは必須です'),
 }).strict();
+
+/**
+ * MCP ツール定義
+ */
+export const toolDefinition: ToolDefinition = {
+  name: 'get_server_details',
+  description: '特定のDiscordサーバーの詳細情報を取得します',
+  inputSchema: {
+    type: 'object' as const,
+    properties: {
+      serverId: {
+        type: 'string',
+        description: '詳細情報を取得するサーバーのID'
+      }
+    },
+    required: ['serverId'],
+    additionalProperties: false
+  }
+};
 
 /**
  * サーバー詳細情報取得ツールの出力スキーマ

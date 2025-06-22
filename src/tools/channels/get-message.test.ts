@@ -1,10 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { DiscordClient } from '../discord/client.js';
+import { DiscordClient } from '../../discord/client.js';
+import { ToolDefinition } from '../../types/mcp.js';
 import { getMessage, GetMessageInputSchema } from './get-message.js';
-import { DiscordMessage } from '../types/discord.js';
+import { DiscordMessage } from '../../types/discord.js';
 
 // DiscordClientのモック
-vi.mock('../discord/client.js');
+vi.mock('../../discord/client.js');
 
 describe('getMessage', () => {
   let mockDiscordClient: vi.Mocked<DiscordClient>;

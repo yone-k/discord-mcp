@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import { DiscordClient } from '../discord/client.js';
+import { DiscordClient } from '../../discord/client.js';
+import { ToolDefinition } from '../../types/mcp.js';
 
 /**
  * サーバー一覧取得ツールの入力スキーマ
@@ -10,6 +11,25 @@ export const GetServerListInputSchema = z.object({
 }).strict();
 
 export type GetServerListInput = z.infer<typeof GetServerListInputSchema>;
+
+/**
+ * MCP ツール定義
+ */
+export const toolDefinition: ToolDefinition = {
+  name: 'get_server_list',
+  description: 'Botが参加しているDiscordサーバーの一覧を取得します',
+  inputSchema: {
+    type: 'object' as const,
+    properties: {
+      includeDetails: {
+        type: 'boolean',
+        description: '詳細情報（メンバー数、機能など）を含めるかどうか',
+        default: false
+      }
+    },
+    additionalProperties: false
+  }
+};
 
 /**
  * サーバー一覧取得ツールの出力スキーマ

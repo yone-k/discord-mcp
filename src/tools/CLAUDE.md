@@ -80,11 +80,22 @@ export const getServerListTool = { ... };
 1. **権限チェック**: Discord APIの権限要件を事前に検証
 2. **レート制限**: Discord APIのレート制限を考慮した実装
 
+## ディレクトリ構造
+
+新しいドメイン別構造により、関連するツールが整理されています：
+
+- **servers/**: サーバー情報関連（get-server-list, get-server-details）
+- **channels/**: チャンネル・メッセージ関連（get-channel-list, get-channel-messages, get-message, get-pinned-messages）
+- **users/**: ユーザー関連（get-user-list）
+- **roles/**: ロール関連（get-guild-roles, get-member-roles）
+
 ## 新規ツール追加時のチェックリスト
 
+- [ ] 適切なドメインディレクトリを選択（servers/channels/users/roles）
 - [ ] ツール定義とハンドラー関数を実装
 - [ ] Zodスキーマで入力検証を定義
 - [ ] エラーハンドリングを実装
 - [ ] ユニットテストを作成
+- [ ] `src/tools/registry.ts`に適切なパスでインポート追加
 - [ ] TOOLLIST.md（日本語版・英語版）を更新
 - [ ] ドキュメントを更新
