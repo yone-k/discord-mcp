@@ -63,10 +63,7 @@ async sendMessage(channelId: string, content: string): Promise<DiscordMessage> {
 }
 ```
 
-詳細な実装例については以下を参照：
-- [Discord REST Client実装例](./docs/examples/discord-rest-client.md)
-- [レート制限対応例](./docs/examples/rate-limiting.md)
-- [Discord REST APIパターン](./docs/patterns/discord-patterns.md)
+※ 詳細な実装例やパターンのドキュメントは、プロジェクトが成長し必要に応じて`./docs/`配下に追加予定です。
 
 ## アンチパターン
 
