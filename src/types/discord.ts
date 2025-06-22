@@ -208,6 +208,8 @@ export interface DiscordAttachment {
   url: string;
   /** プロキシURL */
   proxy_url: string;
+  /** ファイルのMIMEタイプ */
+  content_type?: string;
   /** 画像の高さ */
   height?: number | null;
   /** 画像の幅 */

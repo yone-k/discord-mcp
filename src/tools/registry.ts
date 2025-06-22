@@ -6,7 +6,7 @@ import { toolDefinition as getServerDetails } from './servers/get-server-details
 import { toolDefinition as getChannelList } from './channels/get-channel-list.js';
 import { toolDefinition as getUserList } from './users/get-user-list.js';
 import { toolDefinition as getChannelMessages } from './channels/get-channel-messages.js';
-import { toolDefinition as getMessage } from './channels/get-message.js';
+import { toolDefinition as getMessage } from './messages/get-message.js';
 import { toolDefinition as getPinnedMessages } from './channels/get-pinned-messages.js';
 import { toolDefinition as getGuildRoles } from './roles/get-guild-roles.js';
 import { toolDefinition as getMemberRoles } from './roles/get-member-roles.js';
@@ -15,6 +15,10 @@ import { toolDefinition as getGuildInvites } from './invites/get-guild-invites.j
 import { toolDefinition as getChannelInvites } from './invites/get-channel-invites.js';
 import { toolDefinition as getGuildWebhooks } from './webhooks/get-guild-webhooks.js';
 import { toolDefinition as getChannelWebhooks } from './webhooks/get-channel-webhooks.js';
+import { toolDefinition as sendMessage } from './messages/send-message.js';
+import { toolDefinition as sendFile } from './messages/send-file.js';
+import { toolDefinition as editMessage } from './messages/edit-message.js';
+import { toolDefinition as deleteMessage } from './messages/delete-message.js';
 
 /**
  * 登録されたツール定義の一覧
@@ -33,7 +37,11 @@ export const registeredTools: ToolDefinition[] = [
   getGuildInvites,
   getChannelInvites,
   getGuildWebhooks,
-  getChannelWebhooks
+  getChannelWebhooks,
+  sendMessage,
+  sendFile,
+  editMessage,
+  deleteMessage
 ];
 
 /**

@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
+import FormData from 'form-data';
 import { DiscordGuild, DiscordApiError, DiscordBotUser, DiscordGuildDetailed, DiscordChannel, DiscordGuildMember, DiscordMessage, DiscordRole, DiscordVoiceRegion, DiscordInvite, DiscordWebhook } from '../types/discord.js';
 
 /**
@@ -256,6 +257,109 @@ export class DiscordClient {
     try {
       const response = await this.http.get(`/channels/${channelId}/webhooks`);
       return response.data;
+    } catch (error) {
+      this.handleApiError(error as AxiosError);
+      throw error;
+    }
+  }
+
+  /**
+   * 特定のチャンネルにメッセージを送信
+   */
+  async sendMessage(channelId: string, messageData: {
+    content: string;
+    tts?: boolean;
+    embeds?: any[];
+  }): Promise<DiscordMessage> {
+    try {
+      const response = await this.http.post(`/channels/${channelId}/messages`, messageData);
+      return response.data;
+    } catch (error) {
+      this.handleApiError(error as AxiosError);
+      throw error;
+    }
+  }
+
+  /**
+   * 特定のチャンネルにファイル付きメッセージを送信
+   */
+  async sendMessageWithFile(channelId: string, messageData: {
+    content?: string;
+    file: {
+      name: string;
+      data: Buffer;
+      contentType?: string;
+    };
+    spoiler?: boolean;
+  }): Promise<DiscordMessage> {
+    try {
+      const form = new FormData();
+      
+      // メッセージ内容があれば追加
+      if (messageData.content) {
+        form.append('payload_json', JSON.stringify({ content: messageData.content }));
+      }
+
+      // ファイル名を処理（spoilerの場合はSPOILER_プレフィックスを追加）
+      const filename = messageData.spoiler 
+        ? `SPOILER_${messageData.file.name}`
+        : messageData.file.name;
+
+      // ファイルを追加
+      form.append('files[0]', messageData.file.data, {
+        filename,
+        contentType: messageData.file.contentType || 'application/octet-stream'
+      });
+
+      const response = await axios.post(
+        `${this.baseURL}/channels/${channelId}/messages`,
+        form,
+        {
+          headers: {
+            'Authorization': `Bot ${this.token}`,
+            'User-Agent': 'discord-mcp/1.0.0',
+            ...form.getHeaders()
+          },
+          timeout: 30000 // ファイルアップロードは長めのタイムアウト
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      this.handleApiError(error as AxiosError);
+      throw error;
+    }
+  }
+
+  /**
+   * 特定のメッセージを編集
+   */
+  async editMessage(channelId: string, messageId: string, messageData: {
+    content?: string;
+    embeds?: any[];
+  }): Promise<DiscordMessage> {
+    try {
+      const response = await this.http.patch(
+        `/channels/${channelId}/messages/${messageId}`,
+        messageData
+      );
+      return response.data;
+    } catch (error) {
+      this.handleApiError(error as AxiosError);
+      throw error;
+    }
+  }
+
+  /**
+   * 特定のメッセージを削除
+   */
+  async deleteMessage(channelId: string, messageId: string, reason?: string): Promise<void> {
+    try {
+      const config = reason 
+        ? { headers: { 'X-Audit-Log-Reason': encodeURIComponent(reason) } }
+        : {};
+      
+      await this.http.delete(`/channels/${channelId}/messages/${messageId}`, config);
     } catch (error) {
       this.handleApiError(error as AxiosError);
       throw error;
