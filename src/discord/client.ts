@@ -158,6 +158,19 @@ export class DiscordClient {
   }
 
   /**
+   * 特定のチャンネルのピン留めメッセージ一覧を取得
+   */
+  async getPinnedMessages(channelId: string): Promise<DiscordMessage[]> {
+    try {
+      const response = await this.http.get(`/channels/${channelId}/pins`);
+      return response.data;
+    } catch (error) {
+      this.handleApiError(error as AxiosError);
+      throw error;
+    }
+  }
+
+  /**
    * API エラーハンドリング
    */
   private handleApiError(error: AxiosError): never {

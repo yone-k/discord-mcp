@@ -39,6 +39,11 @@ import {
   GetMessageInputSchema,
   GetMessageInput
 } from './tools/get-message.js';
+import {
+  getPinnedMessages,
+  GetPinnedMessagesInputSchema,
+  GetPinnedMessagesInput
+} from './tools/get-pinned-messages.js';
 
 /**
  * Discord MCP Server
@@ -207,6 +212,21 @@ class DiscordMCPServer {
               required: ['channelId', 'messageId'],
               additionalProperties: false
             }
+          },
+          {
+            name: 'get_pinned_messages',
+            description: '特定のDiscordチャンネルのピン留めメッセージ一覧を取得します',
+            inputSchema: {
+              type: 'object',
+              properties: {
+                channelId: {
+                  type: 'string',
+                  description: 'ピン留めメッセージを取得するチャンネルのID'
+                }
+              },
+              required: ['channelId'],
+              additionalProperties: false
+            }
           }
         ],
       };
@@ -230,6 +250,8 @@ class DiscordMCPServer {
             return await this.handleGetChannelMessages(args);
           case 'get_message':
             return await this.handleGetMessage(args);
+          case 'get_pinned_messages':
+            return await this.handleGetPinnedMessages(args);
           default:
             throw new McpError(
               ErrorCode.MethodNotFound,
@@ -478,6 +500,46 @@ class DiscordMCPServer {
 
     // メッセージを取得
     const result = await getMessage(this.discordClient, input);
+
+    return {
+      content: [
+        {
+          type: 'text' as const,
+          text: JSON.stringify(result, null, 2)
+        }
+      ]
+    };
+  }
+
+  /**
+   * ピン留めメッセージ取得ツールのハンドラー
+   */
+  private async handleGetPinnedMessages(args: unknown) {
+    // Discord クライアントの初期化（遅延初期化）
+    if (!this.discordClient) {
+      const token = process.env.DISCORD_TOKEN;
+      if (!token) {
+        throw new McpError(
+          ErrorCode.InvalidRequest,
+          'DISCORD_TOKEN環境変数が設定されていません'
+        );
+      }
+      this.discordClient = new DiscordClient(token);
+    }
+
+    // 入力バリデーション
+    let input: GetPinnedMessagesInput;
+    try {
+      input = GetPinnedMessagesInputSchema.parse(args || {});
+    } catch (error) {
+      throw new McpError(
+        ErrorCode.InvalidParams,
+        `無効なパラメータ: ${error instanceof Error ? error.message : String(error)}`
+      );
+    }
+
+    // ピン留めメッセージを取得
+    const result = await getPinnedMessages(this.discordClient, input);
 
     return {
       content: [
