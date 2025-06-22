@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { DiscordClient } from '../discord/client.js';
-import { ToolInputSchema } from '@modelcontextprotocol/sdk/types.js';
+import { ToolDefinition } from '../types/mcp.js';
 
 /**
  * ピン留めメッセージ取得ツールの入力スキーマ
@@ -15,11 +15,11 @@ export type GetPinnedMessagesInput = z.infer<typeof GetPinnedMessagesInputSchema
 /**
  * MCP ツール定義
  */
-export const toolDefinition = {
+export const toolDefinition: ToolDefinition = {
   name: 'get_pinned_messages',
   description: '特定のDiscordチャンネルのピン留めメッセージ一覧を取得します',
   inputSchema: {
-    type: 'object',
+    type: 'object' as const,
     properties: {
       channelId: {
         type: 'string',
@@ -28,7 +28,7 @@ export const toolDefinition = {
     },
     required: ['channelId'],
     additionalProperties: false
-  } as ToolInputSchema
+  }
 };
 
 /**

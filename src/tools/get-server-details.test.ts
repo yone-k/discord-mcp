@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { DiscordClient } from '../discord/client.js';
-import { getServerDetails, GetServerDetailsInputSchema } from './get-server-details.js';
+import { ToolDefinition } from '../types/mcp.js';import { getServerDetails, GetServerDetailsInputSchema } from './get-server-details.js';
 import { DiscordGuildDetailed } from '../types/discord.js';
 
 // DiscordClient のモック

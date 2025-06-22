@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { DiscordClient } from '../discord/client.js';
-import { ToolInputSchema } from '@modelcontextprotocol/sdk/types.js';
+import { ToolDefinition } from '../types/mcp.js';
 
 /**
  * ユーザー一覧取得ツールの入力スキーマ
@@ -23,11 +23,11 @@ export type GetUserListInput = z.infer<typeof GetUserListInputSchema>;
 /**
  * MCP ツール定義
  */
-export const toolDefinition = {
+export const toolDefinition: ToolDefinition = {
   name: 'get_user_list',
   description: '特定のDiscordサーバーのユーザー一覧を取得します',
   inputSchema: {
-    type: 'object',
+    type: 'object' as const,
     properties: {
       serverId: {
         type: 'string',
@@ -56,7 +56,7 @@ export const toolDefinition = {
     },
     required: ['serverId'],
     additionalProperties: false
-  } as ToolInputSchema
+  }
 };
 
 /**

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { DiscordClient } from '../discord/client.js';
-import { getMemberRoles, GetMemberRolesInputSchema } from './get-member-roles.js';
+import { ToolDefinition } from '../types/mcp.js';import { getMemberRoles, GetMemberRolesInputSchema } from './get-member-roles.js';
 import { DiscordGuildMember, DiscordRole } from '../types/discord.js';
 
 // DiscordClientのモック

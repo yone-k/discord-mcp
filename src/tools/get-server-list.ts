@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { DiscordClient } from '../discord/client.js';
-import { ToolInputSchema, CallToolRequest } from '@modelcontextprotocol/sdk/types.js';
+import { ToolDefinition } from '../types/mcp.js';
 
 /**
  * サーバー一覧取得ツールの入力スキーマ
@@ -15,11 +15,11 @@ export type GetServerListInput = z.infer<typeof GetServerListInputSchema>;
 /**
  * MCP ツール定義
  */
-export const toolDefinition = {
+export const toolDefinition: ToolDefinition = {
   name: 'get_server_list',
   description: 'Botが参加しているDiscordサーバーの一覧を取得します',
   inputSchema: {
-    type: 'object',
+    type: 'object' as const,
     properties: {
       includeDetails: {
         type: 'boolean',
@@ -28,7 +28,7 @@ export const toolDefinition = {
       }
     },
     additionalProperties: false
-  } as ToolInputSchema
+  }
 };
 
 /**

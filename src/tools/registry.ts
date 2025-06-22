@@ -1,4 +1,4 @@
-import { Tool } from '@modelcontextprotocol/sdk/types.js';
+import { ToolDefinition } from '../types/mcp.js';
 
 // 各ツールから定義をインポート
 import { toolDefinition as getServerList } from './get-server-list.js';
@@ -14,7 +14,7 @@ import { toolDefinition as getMemberRoles } from './get-member-roles.js';
 /**
  * 登録されたツール定義の一覧
  */
-export const registeredTools: Tool[] = [
+export const registeredTools: ToolDefinition[] = [
   getServerList,
   getServerDetails,
   getChannelList,
@@ -29,7 +29,7 @@ export const registeredTools: Tool[] = [
 /**
  * ツール名からツール定義を取得
  */
-export function getToolByName(name: string): Tool | undefined {
+export function getToolByName(name: string): ToolDefinition | undefined {
   return registeredTools.find(tool => tool.name === name);
 }
 

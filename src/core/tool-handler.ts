@@ -1,5 +1,4 @@
 import { 
-  CallToolRequestSchema, 
   ErrorCode, 
   McpError 
 } from '@modelcontextprotocol/sdk/types.js';

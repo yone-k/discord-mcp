@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { DiscordClient } from '../discord/client.js';
-import { ToolInputSchema } from '@modelcontextprotocol/sdk/types.js';
+import { ToolDefinition } from '../types/mcp.js';
 
 /**
  * メンバーロール取得ツールの入力スキーマ
@@ -23,11 +23,11 @@ export type GetMemberRolesInput = z.infer<typeof GetMemberRolesInputSchema>;
 /**
  * MCP ツール定義
  */
-export const toolDefinition = {
+export const toolDefinition: ToolDefinition = {
   name: 'get_member_roles',
   description: '特定のDiscordサーバーメンバーのロール一覧を取得します',
   inputSchema: {
-    type: 'object',
+    type: 'object' as const,
     properties: {
       guildId: {
         type: 'string',
@@ -55,7 +55,7 @@ export const toolDefinition = {
     },
     required: ['guildId', 'userId'],
     additionalProperties: false
-  } as ToolInputSchema
+  }
 };
 
 /**

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { DiscordClient } from '../discord/client.js';
-import { getMessage, GetMessageInputSchema } from './get-message.js';
+import { ToolDefinition } from '../types/mcp.js';import { getMessage, GetMessageInputSchema } from './get-message.js';
 import { DiscordMessage } from '../types/discord.js';
 
 // DiscordClientのモック

@@ -1,7 +1,8 @@
 import { z } from 'zod';
 import { DiscordClient } from '../discord/client.js';
-import { DiscordGuildDetailed } from '../types/discord.js';
-import { ToolInputSchema } from '@modelcontextprotocol/sdk/types.js';
+import { ToolDefinition } from '../types/mcp.js';
+// import { DiscordGuildDetailed } from '../types/discord.js';
+
 
 /**
  * サーバー詳細情報取得ツールの入力スキーマ
@@ -13,11 +14,11 @@ export const GetServerDetailsInputSchema = z.object({
 /**
  * MCP ツール定義
  */
-export const toolDefinition = {
+export const toolDefinition: ToolDefinition = {
   name: 'get_server_details',
   description: '特定のDiscordサーバーの詳細情報を取得します',
   inputSchema: {
-    type: 'object',
+    type: 'object' as const,
     properties: {
       serverId: {
         type: 'string',
@@ -26,7 +27,7 @@ export const toolDefinition = {
     },
     required: ['serverId'],
     additionalProperties: false
-  } as ToolInputSchema
+  }
 };
 
 /**
