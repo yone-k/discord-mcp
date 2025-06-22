@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { DiscordClient } from '../../discord/client.js';
-import { ToolDefinition } from '../../types/mcp.js';
 import { getChannelMessages, GetChannelMessagesInputSchema } from './get-channel-messages.js';
 import { DiscordMessage } from '../../types/discord.js';
 
@@ -86,7 +85,7 @@ describe('getChannelMessages', () => {
         before: '999888777'
       };
 
-      const result = await getChannelMessages(mockDiscordClient, input);
+      await getChannelMessages(mockDiscordClient, input);
 
       expect(mockDiscordClient.getChannelMessages).toHaveBeenCalledWith('987654321', {
         limit: 25,
@@ -103,7 +102,7 @@ describe('getChannelMessages', () => {
         after: '111222333'
       };
 
-      const result = await getChannelMessages(mockDiscordClient, input);
+      await getChannelMessages(mockDiscordClient, input);
 
       expect(mockDiscordClient.getChannelMessages).toHaveBeenCalledWith('987654321', {
         limit: 25,
@@ -120,7 +119,7 @@ describe('getChannelMessages', () => {
         around: '444555666'
       };
 
-      const result = await getChannelMessages(mockDiscordClient, input);
+      await getChannelMessages(mockDiscordClient, input);
 
       expect(mockDiscordClient.getChannelMessages).toHaveBeenCalledWith('987654321', {
         limit: 25,
