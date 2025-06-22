@@ -145,6 +145,19 @@ export class DiscordClient {
   }
 
   /**
+   * 特定のメッセージの詳細を取得
+   */
+  async getMessage(channelId: string, messageId: string): Promise<DiscordMessage> {
+    try {
+      const response = await this.http.get(`/channels/${channelId}/messages/${messageId}`);
+      return response.data;
+    } catch (error) {
+      this.handleApiError(error as AxiosError);
+      throw error;
+    }
+  }
+
+  /**
    * API エラーハンドリング
    */
   private handleApiError(error: AxiosError): never {
