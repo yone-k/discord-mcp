@@ -50,6 +50,36 @@ import {
   GetMemberRolesInputSchema,
   GetMemberRolesInput
 } from '../tools/roles/get-member-roles.js';
+import {
+  getVoiceRegions,
+  GetVoiceRegionsInputSchema,
+  GetVoiceRegionsInput
+} from '../tools/voice/get-voice-regions.js';
+import {
+  getGuildVoiceStates,
+  GetGuildVoiceStatesInputSchema,
+  GetGuildVoiceStatesInput
+} from '../tools/voice/get-guild-voice-states.js';
+import {
+  getGuildInvites,
+  GetGuildInvitesInputSchema,
+  GetGuildInvitesInput
+} from '../tools/invites/get-guild-invites.js';
+import {
+  getChannelInvites,
+  GetChannelInvitesInputSchema,
+  GetChannelInvitesInput
+} from '../tools/invites/get-channel-invites.js';
+import {
+  getGuildWebhooks,
+  GetGuildWebhooksInputSchema,
+  GetGuildWebhooksInput
+} from '../tools/webhooks/get-guild-webhooks.js';
+import {
+  getChannelWebhooks,
+  GetChannelWebhooksInputSchema,
+  GetChannelWebhooksInput
+} from '../tools/webhooks/get-channel-webhooks.js';
 
 /**
  * ツールハンドラーの共通クラス
@@ -182,6 +212,54 @@ export class ToolHandler {
           args, GetMemberRolesInputSchema, 'get_member_roles'
         );
         const result = await getMemberRoles(client, input);
+        return this.formatResponse(result);
+      }
+
+      case 'get_voice_regions': {
+        const input = this.validateAndParseInput<GetVoiceRegionsInput>(
+          args, GetVoiceRegionsInputSchema, 'get_voice_regions'
+        );
+        const result = await getVoiceRegions(client, input);
+        return this.formatResponse(result);
+      }
+
+      case 'get_guild_voice_states': {
+        const input = this.validateAndParseInput<GetGuildVoiceStatesInput>(
+          args, GetGuildVoiceStatesInputSchema, 'get_guild_voice_states'
+        );
+        const result = await getGuildVoiceStates(client, input);
+        return this.formatResponse(result);
+      }
+
+      case 'get_guild_invites': {
+        const input = this.validateAndParseInput<GetGuildInvitesInput>(
+          args, GetGuildInvitesInputSchema, 'get_guild_invites'
+        );
+        const result = await getGuildInvites(client, input);
+        return this.formatResponse(result);
+      }
+
+      case 'get_channel_invites': {
+        const input = this.validateAndParseInput<GetChannelInvitesInput>(
+          args, GetChannelInvitesInputSchema, 'get_channel_invites'
+        );
+        const result = await getChannelInvites(client, input);
+        return this.formatResponse(result);
+      }
+
+      case 'get_guild_webhooks': {
+        const input = this.validateAndParseInput<GetGuildWebhooksInput>(
+          args, GetGuildWebhooksInputSchema, 'get_guild_webhooks'
+        );
+        const result = await getGuildWebhooks(client, input);
+        return this.formatResponse(result);
+      }
+
+      case 'get_channel_webhooks': {
+        const input = this.validateAndParseInput<GetChannelWebhooksInput>(
+          args, GetChannelWebhooksInputSchema, 'get_channel_webhooks'
+        );
+        const result = await getChannelWebhooks(client, input);
         return this.formatResponse(result);
       }
 
