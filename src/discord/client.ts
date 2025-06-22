@@ -184,6 +184,19 @@ export class DiscordClient {
   }
 
   /**
+   * 特定のサーバーの特定メンバーの詳細を取得
+   */
+  async getGuildMember(guildId: string, userId: string): Promise<DiscordGuildMember> {
+    try {
+      const response = await this.http.get(`/guilds/${guildId}/members/${userId}`);
+      return response.data;
+    } catch (error) {
+      this.handleApiError(error as AxiosError);
+      throw error;
+    }
+  }
+
+  /**
    * API エラーハンドリング
    */
   private handleApiError(error: AxiosError): never {
