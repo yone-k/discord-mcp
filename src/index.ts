@@ -49,6 +49,11 @@ import {
   GetGuildRolesInputSchema,
   GetGuildRolesInput
 } from './tools/get-guild-roles.js';
+import {
+  getMemberRoles,
+  GetMemberRolesInputSchema,
+  GetMemberRolesInput
+} from './tools/get-member-roles.js';
 
 /**
  * Discord MCP Server
@@ -262,6 +267,40 @@ class DiscordMCPServer {
               required: ['guildId'],
               additionalProperties: false
             }
+          },
+          {
+            name: 'get_member_roles',
+            description: '特定のDiscordサーバーメンバーのロール一覧を取得します',
+            inputSchema: {
+              type: 'object',
+              properties: {
+                guildId: {
+                  type: 'string',
+                  description: 'メンバーが所属するサーバーのID'
+                },
+                userId: {
+                  type: 'string',
+                  description: 'ロールを取得するユーザーのID'
+                },
+                adminOnly: {
+                  type: 'boolean',
+                  description: '管理者権限を持つロールのみ取得',
+                  default: false
+                },
+                excludeManaged: {
+                  type: 'boolean',
+                  description: '管理ロール（Bot、統合など）を除外',
+                  default: false
+                },
+                includeDetails: {
+                  type: 'boolean',
+                  description: '詳細情報（タグ、アイコンなど）を含めるかどうか',
+                  default: false
+                }
+              },
+              required: ['guildId', 'userId'],
+              additionalProperties: false
+            }
           }
         ],
       };
@@ -289,6 +328,8 @@ class DiscordMCPServer {
             return await this.handleGetPinnedMessages(args);
           case 'get_guild_roles':
             return await this.handleGetGuildRoles(args);
+          case 'get_member_roles':
+            return await this.handleGetMemberRoles(args);
           default:
             throw new McpError(
               ErrorCode.MethodNotFound,
@@ -617,6 +658,46 @@ class DiscordMCPServer {
 
     // サーバーロールを取得
     const result = await getGuildRoles(this.discordClient, input);
+
+    return {
+      content: [
+        {
+          type: 'text' as const,
+          text: JSON.stringify(result, null, 2)
+        }
+      ]
+    };
+  }
+
+  /**
+   * メンバーロール取得ツールのハンドラー
+   */
+  private async handleGetMemberRoles(args: unknown) {
+    // Discord クライアントの初期化（遅延初期化）
+    if (!this.discordClient) {
+      const token = process.env.DISCORD_TOKEN;
+      if (!token) {
+        throw new McpError(
+          ErrorCode.InvalidRequest,
+          'DISCORD_TOKEN環境変数が設定されていません'
+        );
+      }
+      this.discordClient = new DiscordClient(token);
+    }
+
+    // 入力バリデーション
+    let input: GetMemberRolesInput;
+    try {
+      input = GetMemberRolesInputSchema.parse(args || {});
+    } catch (error) {
+      throw new McpError(
+        ErrorCode.InvalidParams,
+        `無効なパラメータ: ${error instanceof Error ? error.message : String(error)}`
+      );
+    }
+
+    // メンバーロールを取得
+    const result = await getMemberRoles(this.discordClient, input);
 
     return {
       content: [
