@@ -31,9 +31,13 @@ discord-mcp/
 │   ├── core/              # MCPサーバーのコア機能
 │   │   └── tool-handler.ts    # 共通ツールハンドラー
 │   ├── discord/           # Discord API統合機能
-│   ├── tools/             # MCPツール実装
+│   ├── tools/             # MCPツール実装（ドメイン別整理）
 │   │   ├── registry.ts         # ツールレジストリ
-│   │   └── get-*.ts           # 各ツール実装
+│   │   ├── servers/           # サーバー関連ツール
+│   │   ├── channels/          # チャンネル・メッセージ関連ツール
+│   │   ├── users/             # ユーザー関連ツール
+│   │   ├── roles/             # ロール関連ツール
+│   │   └── docs/              # ツール固有ドキュメント
 │   ├── types/             # 型定義
 │   ├── utils/             # ユーティリティ関数
 │   └── index.ts           # エントリーポイント（簡素化済み）
@@ -69,12 +73,17 @@ discord-mcp/
 
 ### 新規ツール追加フロー
 
-1. **ツールファイルの作成**: `src/tools/get-new-feature.ts`
-2. **ツール定義の追加**: ファイル内に`toolDefinition`エクスポートを含める
-3. **レジストリへの登録**: `src/tools/registry.ts`のインポートとリストに追加
-4. **ハンドラーの追加**: `src/core/tool-handler.ts`のswitchケースに追加
-5. **テストの作成**: `src/tools/get-new-feature.test.ts`
-6. **ドキュメント更新**: TOOLLIST.mdを更新
+1. **ドメインの決定**: 追加するツールが属するドメインを決定
+   - `servers/`: サーバー関連機能
+   - `channels/`: チャンネル・メッセージ関連機能  
+   - `users/`: ユーザー関連機能
+   - `roles/`: ロール関連機能
+2. **ツールファイルの作成**: `src/tools/{domain}/get-new-feature.ts`
+3. **ツール定義の追加**: ファイル内に`toolDefinition`エクスポートを含める
+4. **レジストリへの登録**: `src/tools/registry.ts`のインポートとリストに追加
+5. **ハンドラーの追加**: `src/core/tool-handler.ts`のswitchケースに追加
+6. **テストの作成**: `src/tools/{domain}/get-new-feature.test.ts`
+7. **ドキュメント更新**: TOOLLIST.mdを更新
 
 ※ `index.ts`の編集は不要（動的登録のため）
 
