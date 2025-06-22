@@ -118,10 +118,6 @@ docker run --rm -e DISCORD_TOKEN=your_token discord-mcp
 <type>: <subject>
 
 <body>
-
-🤖 Generated with [Claude Code](https://claude.ai/code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 
 ### タイプ分類
