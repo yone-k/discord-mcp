@@ -95,6 +95,11 @@ import {
   DeleteMessageInputSchema,
   DeleteMessageInput
 } from '../tools/messages/delete-message.js';
+import {
+  executeWebhook,
+  ExecuteWebhookInputSchema,
+  ExecuteWebhookInput
+} from '../tools/webhooks/execute-webhook.js';
 
 /**
  * ツールハンドラーの共通クラス
@@ -300,6 +305,14 @@ export class ToolHandler {
           args, DeleteMessageInputSchema, 'delete_message'
         );
         const result = await deleteMessage(client, input);
+        return this.formatResponse(result);
+      }
+
+      case 'execute_webhook': {
+        const input = this.validateAndParseInput<ExecuteWebhookInput>(
+          args, ExecuteWebhookInputSchema, 'execute_webhook'
+        );
+        const result = await executeWebhook(client, input);
         return this.formatResponse(result);
       }
 

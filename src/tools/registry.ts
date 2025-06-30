@@ -19,6 +19,7 @@ import { toolDefinition as sendMessage } from './messages/send-message.js';
 import { toolDefinition as sendFile } from './messages/send-file.js';
 import { toolDefinition as editMessage } from './messages/edit-message.js';
 import { toolDefinition as deleteMessage } from './messages/delete-message.js';
+import { toolDefinition as executeWebhook } from './webhooks/execute-webhook.js';
 
 /**
  * 登録されたツール定義の一覧
@@ -41,7 +42,8 @@ export const registeredTools: ToolDefinition[] = [
   sendMessage,
   sendFile,
   editMessage,
-  deleteMessage
+  deleteMessage,
+  executeWebhook
 ];
 
 /**
