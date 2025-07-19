@@ -117,6 +117,46 @@ Botが参加しているDiscordサーバーの一覧を取得します。
 - Webhook作成者、タイプ、URL情報
 - フォロワーWebhookやアプリケーションWebhookを識別
 
+### get_webhook
+
+特定のDiscord Webhookの詳細情報を取得します。
+
+- WebhookIDによる単一Webhookの詳細取得
+- 作成者、タイプ、URL、トークン情報
+- ソースサーバー・チャンネル情報を含む
+
+### create_webhook
+
+Discordチャンネルに新しいWebhookを作成します。
+
+- チャンネルIDと名前を指定してWebhook作成
+- カスタムアバター設定対応（data URI形式）
+- 作成されたWebhookの完全な情報を返却
+
+### update_webhook
+
+既存のDiscord Webhookを更新します。
+
+- WebhookIDを指定して名前やアバターを変更
+- 名前またはアバターのいずれかは必須
+- アバター削除対応（null指定）
+
+### delete_webhook
+
+Discord Webhookを削除します。
+
+- 自分が作成したWebhookまたは適切な権限がある場合
+- 削除理由の指定可能（監査ログに記録）
+- 削除実行日時の記録
+
+### execute_webhook
+
+Discord Webhookを実行してメッセージを送信します。
+
+- WebhookIDとトークンを使用したメッセージ送信
+- 最大2000文字のテキストメッセージ対応
+- Botトークン不要の外部統合向け機能
+
 ### send_message
 
 Discordチャンネルにメッセージを送信します。

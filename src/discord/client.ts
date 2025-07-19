@@ -264,6 +264,120 @@ export class DiscordClient {
   }
 
   /**
+   * 特定のWebhookの詳細情報を取得
+   */
+  async getWebhook(webhookId: string): Promise<DiscordWebhook> {
+    // パラメータ検証
+    if (!webhookId || webhookId.trim() === '') {
+      throw new Error('webhookIdは必須です');
+    }
+
+    try {
+      const response = await this.http.get(`/webhooks/${webhookId}`);
+      return response.data;
+    } catch (error) {
+      this.handleApiError(error as AxiosError);
+      throw error;
+    }
+  }
+
+  /**
+   * 特定のチャンネルにWebhookを作成
+   */
+  async createWebhook(channelId: string, webhookData: {
+    name: string;
+    avatar?: string;
+  }): Promise<DiscordWebhook> {
+    // パラメータ検証
+    if (!channelId || channelId.trim() === '') {
+      throw new Error('channelIdは必須です');
+    }
+
+    if (!webhookData) {
+      throw new Error('webhookDataは必須です');
+    }
+
+    if (!webhookData.name || webhookData.name.trim() === '') {
+      throw new Error('webhook名は必須です');
+    }
+
+    if (webhookData.name.length > 80) {
+      throw new Error('webhook名は80文字以内である必要があります');
+    }
+
+    try {
+      const response = await this.http.post(`/channels/${channelId}/webhooks`, webhookData);
+      return response.data;
+    } catch (error) {
+      this.handleApiError(error as AxiosError);
+      throw error;
+    }
+  }
+
+  /**
+   * 特定のWebhookを更新
+   */
+  async updateWebhook(webhookId: string, updateData: {
+    name?: string;
+    avatar?: string | null;
+  }): Promise<DiscordWebhook> {
+    // パラメータ検証
+    if (!webhookId || webhookId.trim() === '') {
+      throw new Error('webhookIdは必須です');
+    }
+
+    if (!updateData) {
+      throw new Error('updateDataは必須です');
+    }
+
+    // name の検証（先に行う）
+    if (updateData.name !== undefined) {
+      if (updateData.name.trim() === '') {
+        throw new Error('webhook名は空文字列にできません');
+      }
+      if (updateData.name.length > 80) {
+        throw new Error('webhook名は80文字以内である必要があります');
+      }
+    }
+
+    // name または avatar のいずれかは必須
+    if (!updateData.name && updateData.avatar === undefined) {
+      throw new Error('name または avatar のいずれかは必須です');
+    }
+
+    try {
+      const response = await this.http.patch(`/webhooks/${webhookId}`, updateData);
+      return response.data;
+    } catch (error) {
+      this.handleApiError(error as AxiosError);
+      throw error;
+    }
+  }
+
+  /**
+   * 特定のWebhookを削除
+   */
+  async deleteWebhook(webhookId: string, reason?: string): Promise<void> {
+    // パラメータ検証
+    if (!webhookId || webhookId.trim() === '') {
+      throw new Error('webhookIdは必須です');
+    }
+
+    try {
+      if (reason) {
+        await this.http.delete(`/webhooks/${webhookId}`, {
+          headers: { 'X-Audit-Log-Reason': encodeURIComponent(reason) }
+        });
+      } else {
+        await this.http.delete(`/webhooks/${webhookId}`);
+      }
+    } catch (error) {
+      this.handleApiError(error as AxiosError);
+      throw error;
+    }
+  }
+
+  /**
    * 特定のチャンネルにメッセージを送信
    */
   async sendMessage(channelId: string, messageData: {

@@ -100,6 +100,26 @@ import {
   ExecuteWebhookInputSchema,
   ExecuteWebhookInput
 } from '../tools/webhooks/execute-webhook.js';
+import {
+  createWebhook,
+  CreateWebhookInputSchema,
+  CreateWebhookInput
+} from '../tools/webhooks/create-webhook.js';
+import {
+  updateWebhook,
+  UpdateWebhookInputSchema,
+  UpdateWebhookInput
+} from '../tools/webhooks/update-webhook.js';
+import {
+  deleteWebhook,
+  DeleteWebhookInputSchema,
+  DeleteWebhookInput
+} from '../tools/webhooks/delete-webhook.js';
+import {
+  getWebhook,
+  GetWebhookInputSchema,
+  GetWebhookInput
+} from '../tools/webhooks/get-webhook.js';
 
 /**
  * ツールハンドラーの共通クラス
@@ -313,6 +333,38 @@ export class ToolHandler {
           args, ExecuteWebhookInputSchema, 'execute_webhook'
         );
         const result = await executeWebhook(client, input);
+        return this.formatResponse(result);
+      }
+
+      case 'create_webhook': {
+        const input = this.validateAndParseInput<CreateWebhookInput>(
+          args, CreateWebhookInputSchema, 'create_webhook'
+        );
+        const result = await createWebhook(client, input);
+        return this.formatResponse(result);
+      }
+
+      case 'update_webhook': {
+        const input = this.validateAndParseInput<UpdateWebhookInput>(
+          args, UpdateWebhookInputSchema, 'update_webhook'
+        );
+        const result = await updateWebhook(client, input);
+        return this.formatResponse(result);
+      }
+
+      case 'delete_webhook': {
+        const input = this.validateAndParseInput<DeleteWebhookInput>(
+          args, DeleteWebhookInputSchema, 'delete_webhook'
+        );
+        const result = await deleteWebhook(client, input);
+        return this.formatResponse(result);
+      }
+
+      case 'get_webhook': {
+        const input = this.validateAndParseInput<GetWebhookInput>(
+          args, GetWebhookInputSchema, 'get_webhook'
+        );
+        const result = await getWebhook(client, input);
         return this.formatResponse(result);
       }
 

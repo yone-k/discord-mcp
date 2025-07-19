@@ -15,11 +15,15 @@ import { toolDefinition as getGuildInvites } from './invites/get-guild-invites.j
 import { toolDefinition as getChannelInvites } from './invites/get-channel-invites.js';
 import { toolDefinition as getGuildWebhooks } from './webhooks/get-guild-webhooks.js';
 import { toolDefinition as getChannelWebhooks } from './webhooks/get-channel-webhooks.js';
+import { toolDefinition as getWebhook } from './webhooks/get-webhook.js';
+import { toolDefinition as createWebhook } from './webhooks/create-webhook.js';
+import { toolDefinition as updateWebhook } from './webhooks/update-webhook.js';
+import { toolDefinition as deleteWebhook } from './webhooks/delete-webhook.js';
+import { toolDefinition as executeWebhook } from './webhooks/execute-webhook.js';
 import { toolDefinition as sendMessage } from './messages/send-message.js';
 import { toolDefinition as sendFile } from './messages/send-file.js';
 import { toolDefinition as editMessage } from './messages/edit-message.js';
 import { toolDefinition as deleteMessage } from './messages/delete-message.js';
-import { toolDefinition as executeWebhook } from './webhooks/execute-webhook.js';
 
 /**
  * 登録されたツール定義の一覧
@@ -39,11 +43,15 @@ export const registeredTools: ToolDefinition[] = [
   getChannelInvites,
   getGuildWebhooks,
   getChannelWebhooks,
+  getWebhook,
+  createWebhook,
+  updateWebhook,
+  deleteWebhook,
+  executeWebhook,
   sendMessage,
   sendFile,
   editMessage,
-  deleteMessage,
-  executeWebhook
+  deleteMessage
 ];
 
 /**
